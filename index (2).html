@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spicezy – Live Store</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light;
+--bg:#f4efe9;--card:#fff;--ink:#1f1612;--mu:#6b5d55;--ln:#e2d8cf;--hd:#2b1810;--sub:#4a2a18;--ac:#e0935f;--btn:#e8a46c;--red:#b4441a;--ok:#067d62;--sh:0 1px 3px #0001,0 6px 18px #0000000d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1417;--card:#1b2227;--ink:#f1f3f3;--mu:#a6b0b4;--ln:#344048;--red:#ff8a50;--ok:#3ecf9f;--sh:0 1px 3px #0005}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1417;--card:#1b2227;--ink:#f1f3f3;--mu:#a6b0b4;--ln:#344048;--red:#ff8a50;--ok:#3ecf9f;--sh:0 1px 3px #0005}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit}button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+header{background:var(--hd);color:#fff;display:flex;align-items:center;gap:10px;padding:8px 12px;position:sticky;top:0;z-index:20;flex-wrap:wrap}
+.logo{font-weight:800;font-size:20px;white-space:nowrap;cursor:pointer}.logo b{color:var(--ac)}
+.search{flex:1;display:flex;min-width:140px}.search input{flex:1;min-width:0;border:0;border-radius:8px 0 0 8px;padding:9px 12px;background:#fff;color:#0f1111;margin:0}
+.search span{background:var(--ac);color:#111;border-radius:0 8px 8px 0;padding:9px 12px}
+.hb{background:none;border:0;color:#fff;cursor:pointer;padding:6px 8px;border-radius:6px;white-space:nowrap}.hb:hover{outline:1px solid #fff}
+#cc{background:var(--ac);color:#111;border-radius:99px;padding:0 7px;font-weight:700;margin-left:2px}
+.sub{background:var(--sub);color:#fff;display:flex;gap:6px;padding:6px 12px;overflow-x:auto;scrollbar-width:thin}
+.sub button{background:none;border:0;color:#fff;cursor:pointer;padding:5px 10px;border-radius:6px;white-space:nowrap}.sub button.on,.sub button:hover{outline:1px solid #fff}
+main{max-width:1200px;margin:auto;padding:12px}
+.hero{background:linear-gradient(120deg,#2b1810,#c8743f);color:#fff;border-radius:14px;padding:26px;margin-bottom:14px}.hero h1{margin:0 0 4px;font-size:28px}
+.chip{display:inline-block;background:#fff3;border-radius:99px;padding:3px 10px;margin:8px 6px 0 0;font-size:13px}
+h2.sec{font-size:19px;margin:20px 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:5px;position:relative;box-shadow:var(--sh);transition:transform .15s}.card:hover{transform:translateY(-2px)}
+.pic{height:150px;border-radius:10px;display:grid;place-items:center;font-size:64px;overflow:hidden;text-decoration:none;position:relative}.pic img{width:100%;height:100%;object-fit:contain}
+.card h3{margin:2px 0;font-size:15px;line-height:1.25}.card h3 a{text-decoration:none}.card h3 a:hover{text-decoration:underline}
+.pr{font-size:20px;font-weight:700}.mu{color:var(--mu);font-size:13px}.st{color:#f5a623;font-size:13px}.ok{color:var(--ok)}.bad{color:var(--red)}
+.badge{position:absolute;top:8px;left:8px;background:#c8743f;color:#fff;border-radius:99px;padding:2px 9px;font-size:11px;font-weight:700;z-index:1}
+.heart{position:absolute;top:8px;right:8px;z-index:2;background:var(--card);border:1px solid var(--ln);border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:17px;line-height:1}
+.btn{background:var(--btn);border:1px solid #c98550;color:#111;border-radius:99px;padding:8px 14px;cursor:pointer;font-weight:600}.btn:hover{filter:brightness(.96)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn2{background:var(--card);border:1px solid var(--ln);border-radius:8px;padding:6px 12px;cursor:pointer}.btn2:hover{border-color:var(--ac)}
+.btn3{background:#c8743f;border:1px solid #a85f30;color:#fff;border-radius:99px;padding:9px 14px;cursor:pointer;font-weight:600;width:100%}.btn3:disabled{opacity:.5}
+.shade{position:fixed;inset:0;background:#0008;z-index:30;display:none}.shade.on{display:block}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--card);z-index:31;transform:translateX(105%);transition:.2s;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.drawer.on{transform:none}.dh{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--ln)}.db{flex:1;overflow:auto;padding:12px 14px}.df{padding:12px 14px;border-top:1px solid var(--ln)}
+.ci{display:grid;grid-template-columns:54px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--ln)}.ci .pic{height:54px;font-size:30px}
+.qty{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ln);border-radius:99px;padding:2px 8px}.qty button{background:none;border:0;cursor:pointer;font-size:17px;padding:0 4px}
+.row{display:flex;justify-content:space-between;gap:8px;margin:4px 0}
+input,select,textarea{background:var(--card);border:1px solid var(--ln);border-radius:8px;padding:8px 10px;width:100%;margin:4px 0}
+input[type=checkbox],input[type=radio]{width:auto;margin:0 6px 0 0}
+.panel{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:var(--sh)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}.stats div{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px}.stats b{display:block;font-size:21px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px;border-top:1px solid var(--ln);vertical-align:top}th{border:0;color:var(--mu);white-space:nowrap}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px}.wide{grid-column:1/-1}
+.toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:8px;z-index:60;max-width:90vw}
+.trk{display:flex;gap:4px;margin:6px 0}.trk span{flex:1;font-size:10px;text-align:center;padding:4px 2px;border-radius:6px;background:var(--bg);color:var(--mu)}.trk span.on{background:var(--ok);color:#fff}
+.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:25;background:#c8743f;color:#fff;border:0;border-radius:99px;padding:12px 18px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px #0006}.fab span{background:#fff;color:#4a2a18;border-radius:99px;padding:0 7px;margin-left:4px}
+.menu{position:fixed;top:0;left:0;bottom:0;width:min(300px,86vw);background:var(--card);z-index:41;transform:translateX(-105%);transition:.2s;display:flex;flex-direction:column;overflow:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}.menu.on{transform:none}#mshade{z-index:40}
+.menu button{background:none;border:0;border-bottom:1px solid var(--ln);text-align:left;padding:14px 16px;cursor:pointer}.menu button:hover{background:var(--bg)}
+.mh{display:flex;gap:10px;align-items:center;padding:14px 16px;background:var(--hd);color:#fff}.mh>div{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}.mh .mu{color:#ddd}.menu .mh button{border:0;color:#fff;padding:6px 10px;width:auto}
+.av{width:38px;height:38px;border-radius:50%;background:var(--ac);color:#2b1810;display:grid;place-items:center;font-weight:800;flex:none}.msub button{padding-left:34px;font-size:14px}
+body[data-gate] #fab,body[data-gate] #cartBtn,body[data-gate] #menuBtn,body[data-gate] .search,body[data-gate] #sub{display:none}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}.bar select,.bar input{width:auto;margin:0}.bar label{display:flex;align-items:center;font-size:14px}
+.pd{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:18px}@media(max-width:720px){.pd{grid-template-columns:1fr}.hero h1{font-size:22px}.pic{height:130px}.grid{grid-template-columns:repeat(2,1fr);gap:8px}.card{padding:9px}.pr{font-size:17px}}
+.pd .big{height:340px;font-size:130px}.thumbs{display:flex;gap:8px;margin-top:8px}.thumbs button{width:58px;height:58px;border:2px solid var(--ln);border-radius:8px;background:var(--card);cursor:pointer;padding:0;overflow:hidden;font-size:26px}.thumbs button.on{border-color:var(--ac)}.thumbs img{width:100%;height:100%;object-fit:contain}
+.vp{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.vp button{border:1px solid var(--ln);background:var(--card);border-radius:10px;padding:7px 12px;cursor:pointer}.vp button.on{border-color:var(--ac);box-shadow:0 0 0 2px var(--ac) inset;font-weight:700}.vp button:disabled{opacity:.45;text-decoration:line-through;cursor:not-allowed}
+.hs{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}.hs .card{min-width:190px;max-width:190px}
+.pill{display:inline-block;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700;background:var(--bg)}.pill.ok{background:var(--ok);color:#fff}.pill.bad{background:var(--red);color:#fff}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.alert{border-left:4px solid var(--red);background:var(--card);border-radius:8px;padding:10px 12px;margin-bottom:12px}
+.bar2{height:8px;background:var(--ac);border-radius:4px;min-width:2px}
+#inv{position:fixed;inset:0;background:var(--bg);z-index:70;overflow:auto;display:none;padding:12px}#inv.on{display:block}.invp{max-width:760px;margin:auto;background:#fff;color:#111;border:1px solid #ccc;border-radius:8px;padding:24px}.invp table{color:#111}.invp th{color:#555}.invp td,.invp th{border-top:1px solid #ddd}
+@media print{body>*:not(#inv){display:none!important}#inv{position:static;display:block!important;padding:0}.noprint{display:none!important}.invp{border:0;padding:0}}
+</style>
+</head>
+<body data-gate="1">
+<header>
+  <button class="hb" id="menuBtn" aria-label="Open menu">☰</button>
+  <span class="logo" id="logo">🌶️ Spice<b>zy</b></span>
+  <div class="search"><input id="q" placeholder="Search spices, masalas, herbs, gifts…" aria-label="Search" autocomplete="off"><span>🔍</span></div>
+  <button class="hb" id="wishBtn" aria-label="Wishlist">♡ <span id="wc"></span></button>
+  <button class="hb" id="adminBtn" hidden>⚙️ Admin</button>
+  <button class="hb" id="cartBtn">🛒 Cart <span id="cc">0</span></button>
+</header>
+<nav class="menu" id="menu" aria-label="Menu"></nav><div class="shade" id="mshade"></div>
+<div class="sub" id="sub"></div>
+<button class="fab" id="fab" aria-label="Open cart">🛒 Cart <span id="fc">0</span></button>
+<main id="main"><p class="mu">Loading store…</p></main>
+<div class="shade" id="shade"></div>
+<aside class="drawer" id="drawer" aria-label="Cart"></aside>
+<div id="inv" role="dialog" aria-label="Invoice"></div>
+<script>
+/* Starter catalogue is inserted here by the build (see catalog.js) */
+const SZ_CATALOG = [{"id":"p_chilli","name":"Kashmiri Chilli Powder 200g","cat":"Pure Powders","price":149,"emoji":"🌶️","desc":"Deep red colour, mild heat.","rating":4.7,"tags":[],"n":{"std":60},"ord":0},{"id":"p_turmeric","name":"Turmeric Powder 200g","cat":"Pure Powders","price":99,"emoji":"🟡","desc":"High-curcumin, stone ground.","rating":4.6,"tags":[],"n":{"std":80},"ord":1},{"id":"p_coriander","name":"Coriander Powder 200g","cat":"Pure Powders","price":89,"emoji":"🌿","desc":"Fresh roasted and ground.","rating":4.5,"tags":[],"n":{"std":70},"ord":2},{"id":"p_garam","name":"Garam Masala 100g","cat":"Blended Masalas","price":129,"emoji":"🫚","desc":"Warm, aromatic whole-spice blend.","rating":4.8,"tags":[],"n":{"std":50},"ord":3},{"id":"p_chole","name":"Chole Masala 100g","cat":"Blended Masalas","price":99,"emoji":"🍛","desc":"Tangy blend for chickpea curry.","rating":4.4,"tags":[],"n":{"std":45},"ord":4},{"id":"p_chicken","name":"Chicken Masala 100g","cat":"Non-Veg Masalas","price":119,"emoji":"🍗","desc":"Bold masala for chicken curries.","rating":4.6,"tags":[],"n":{"std":40},"ord":5},{"id":"p_fish","name":"Fish Fry Masala 100g","cat":"Non-Veg Masalas","price":109,"emoji":"🐟","desc":"Crisp, tangy coastal fry mix.","rating":4.5,"tags":[],"n":{"std":35},"ord":6},{"id":"p_sambar","name":"Sambar Powder 200g","cat":"South Indian","price":119,"emoji":"🥘","desc":"Madurai-style sambar blend.","rating":4.8,"tags":[],"n":{"std":9},"ord":7},{"id":"p_rasam","name":"Rasam Powder 100g","cat":"South Indian","price":79,"emoji":"🍲","desc":"Peppery, tangy rasam mix.","rating":4.7,"tags":[],"n":{"std":55},"ord":8},{"id":"p_jeera","name":"Cumin Seeds (Jeera)","cat":"Whole Spices","price":55,"emoji":"🌾","desc":"Whole cumin seeds for tempering and spice blends.","tags":["jeera","tadka"],"variants":[{"id":"100g","w":"100g","price":55},{"id":"250g","w":"250g","price":125},{"id":"500g","w":"500g","price":235}],"n":{"100g":40,"250g":30,"500g":20},"ord":100},{"id":"p_dhania","name":"Coriander Seeds (Dhania)","cat":"Whole Spices","price":35,"emoji":"🌿","desc":"Whole coriander seeds with a mild citrus aroma.","tags":["dhania"],"variants":[{"id":"100g","w":"100g","price":35},{"id":"250g","w":"250g","price":80},{"id":"500g","w":"500g","price":150}],"n":{"100g":40,"250g":30,"500g":20},"ord":101},{"id":"p_pepperw","name":"Black Pepper Whole","cat":"Whole Spices","price":69,"emoji":"⚫","desc":"Bold whole peppercorns for grinding fresh.","tags":["pepper","kali mirch"],"variants":[{"id":"50g","w":"50g","price":69},{"id":"100g","w":"100g","price":129},{"id":"250g","w":"250g","price":299}],"n":{"50g":40,"100g":30,"250g":15},"ord":102},{"id":"p_cardamom","name":"Green Cardamom (Elaichi)","cat":"Whole Spices","price":99,"emoji":"🟢","desc":"Fragrant whole green cardamom pods.","tags":["elaichi"],"variants":[{"id":"25g","w":"25g","price":99},{"id":"50g","w":"50g","price":189},{"id":"100g","w":"100g","price":359}],"n":{"25g":30,"50g":25,"100g":15},"ord":103},{"id":"p_clove","name":"Cloves (Laung)","cat":"Whole Spices","price":75,"emoji":"🌸","desc":"Whole cloves with a warm, sweet aroma.","tags":["laung"],"variants":[{"id":"25g","w":"25g","price":75},{"id":"50g","w":"50g","price":139},{"id":"100g","w":"100g","price":259}],"n":{"25g":30,"50g":25,"100g":15},"ord":104},{"id":"p_cinnamon","name":"Cinnamon Sticks (Dalchini)","cat":"Whole Spices","price":65,"emoji":"🪵","desc":"Whole cinnamon sticks for curries, tea and desserts.","tags":["dalchini"],"variants":[{"id":"50g","w":"50g","price":65},{"id":"100g","w":"100g","price":119},{"id":"250g","w":"250g","price":279}],"n":{"50g":30,"100g":25,"250g":12},"ord":105},{"id":"p_bay","name":"Bay Leaves (Tej Patta)","cat":"Whole Spices","price":29,"emoji":"🍃","desc":"Dried bay leaves for rice dishes and gravies.","tags":["tej patta"],"variants":[{"id":"25g","w":"25g","price":29},{"id":"50g","w":"50g","price":55},{"id":"100g","w":"100g","price":99}],"n":{"25g":40,"50g":30,"100g":20},"ord":106},{"id":"p_staranise","name":"Star Anise (Chakra Phool)","cat":"Whole Spices","price":79,"emoji":"⭐","desc":"Whole star anise for biryani and masala tea.","tags":["chakra phool"],"variants":[{"id":"25g","w":"25g","price":79},{"id":"50g","w":"50g","price":149}],"n":{"25g":25,"50g":20},"ord":107},{"id":"p_fennel","name":"Fennel Seeds (Saunf)","cat":"Whole Spices","price":49,"emoji":"🌱","desc":"Sweet fennel seeds for cooking and after-meal freshness.","tags":["saunf"],"variants":[{"id":"100g","w":"100g","price":49},{"id":"250g","w":"250g","price":109},{"id":"500g","w":"500g","price":205}],"n":{"100g":40,"250g":30,"500g":20},"ord":108},{"id":"p_mustard","name":"Mustard Seeds (Rai)","cat":"Whole Spices","price":29,"emoji":"🟤","desc":"Small whole mustard seeds for tempering.","tags":["rai","tadka"],"variants":[{"id":"100g","w":"100g","price":29},{"id":"250g","w":"250g","price":65},{"id":"500g","w":"500g","price":119}],"n":{"100g":40,"250g":30,"500g":20},"ord":109},{"id":"p_methi","name":"Fenugreek Seeds (Methi)","cat":"Whole Spices","price":29,"emoji":"🟡","desc":"Whole fenugreek seeds for pickles and tempering.","tags":["methi"],"variants":[{"id":"100g","w":"100g","price":29},{"id":"250g","w":"250g","price":65}],"n":{"100g":40,"250g":30},"ord":110},{"id":"p_dryred","name":"Dry Red Chillies","cat":"Whole Spices","price":59,"emoji":"🌶️","desc":"Whole dried red chillies for tempering and chutneys.","tags":["mirchi"],"variants":[{"id":"100g","w":"100g","price":59},{"id":"250g","w":"250g","price":135},{"id":"500g","w":"500g","price":255}],"n":{"100g":40,"250g":25,"500g":15},"ord":111},{"id":"p_ajwain","name":"Carom Seeds (Ajwain)","cat":"Whole Spices","price":39,"emoji":"🌾","desc":"Pungent carom seeds for breads and snacks.","tags":["ajwain"],"variants":[{"id":"50g","w":"50g","price":39},{"id":"100g","w":"100g","price":69}],"n":{"50g":30,"100g":25},"ord":112},{"id":"p_pavbhaji","name":"Pav Bhaji Masala","cat":"Blended Masalas","price":45,"emoji":"🍛","desc":"Blend for the classic street-style pav bhaji.","tags":["pav bhaji"],"variants":[{"id":"50g","w":"50g","price":45},{"id":"100g","w":"100g","price":85}],"n":{"50g":40,"100g":30},"ord":113},{"id":"p_chaat","name":"Chaat Masala","cat":"Blended Masalas","price":45,"emoji":"🥗","desc":"Tangy seasoning for fruit, salads and snacks.","tags":["chaat"],"variants":[{"id":"50g","w":"50g","price":45},{"id":"100g","w":"100g","price":85}],"n":{"50g":40,"100g":30},"ord":114},{"id":"p_sabzi","name":"Sabzi Masala","cat":"Blended Masalas","price":39,"emoji":"🥕","desc":"Everyday masala for vegetable dishes.","tags":["sabzi"],"variants":[{"id":"50g","w":"50g","price":39},{"id":"100g","w":"100g","price":75},{"id":"200g","w":"200g","price":139}],"n":{"50g":40,"100g":30,"200g":20},"ord":115},{"id":"p_tandoori","name":"Tandoori Masala","cat":"Blended Masalas","price":55,"emoji":"🔥","desc":"Smoky, red masala for tandoori-style marinades.","tags":["tandoori"],"variants":[{"id":"50g","w":"50g","price":55},{"id":"100g","w":"100g","price":99}],"n":{"50g":35,"100g":25},"ord":116},{"id":"p_biryani","name":"Biryani Masala","cat":"Blended Masalas","price":59,"emoji":"🍚","desc":"Aromatic blend for layered biryani.","tags":["biryani"],"variants":[{"id":"50g","w":"50g","price":59},{"id":"100g","w":"100g","price":109}],"n":{"50g":35,"100g":25},"ord":117},{"id":"p_meat","name":"Meat Masala 100g","cat":"Non-Veg Masalas","price":65,"emoji":"🥩","desc":"Robust masala for mutton and meat curries.","tags":["mutton"],"variants":[{"id":"50g","w":"50g","price":65},{"id":"100g","w":"100g","price":119}],"n":{"50g":30,"100g":25},"ord":118},{"id":"p_idlipodi","name":"Idli Podi (Gun Powder)","cat":"South Indian","price":69,"emoji":"🍘","desc":"Spiced lentil powder to mix with oil for idli and dosa.","tags":["idli","dosa","podi"],"variants":[{"id":"100g","w":"100g","price":69},{"id":"250g","w":"250g","price":155}],"n":{"100g":35,"250g":25},"ord":119},{"id":"p_puli","name":"Tamarind (Puli)","cat":"South Indian","price":69,"emoji":"🟤","desc":"Seedless tamarind for sambar and rasam.","tags":["puli","imli"],"variants":[{"id":"250g","w":"250g","price":69},{"id":"500g","w":"500g","price":129}],"n":{"250g":30,"500g":20},"ord":120},{"id":"p_kasuri","name":"Kasuri Methi (Dried Fenugreek Leaves)","cat":"Herbs & Botanicals","price":35,"emoji":"🌿","desc":"Dried fenugreek leaves to finish curries and breads.","tags":["kasuri","methi leaves"],"variants":[{"id":"25g","w":"25g","price":35},{"id":"50g","w":"50g","price":65},{"id":"100g","w":"100g","price":119}],"n":{"25g":40,"50g":30,"100g":20},"ord":121},{"id":"p_mint","name":"Dried Mint Leaves (Pudina)","cat":"Herbs & Botanicals","price":39,"emoji":"🌿","desc":"Dried mint for raita, chutneys and drinks.","tags":["pudina"],"variants":[{"id":"25g","w":"25g","price":39},{"id":"50g","w":"50g","price":69}],"n":{"25g":30,"50g":25},"ord":122},{"id":"p_curryleaf","name":"Dried Curry Leaves","cat":"Herbs & Botanicals","price":35,"emoji":"🍃","desc":"Dried curry leaves for tempering when fresh ones are not at hand.","tags":["kadi patta"],"variants":[{"id":"25g","w":"25g","price":35},{"id":"50g","w":"50g","price":59}],"n":{"25g":30,"50g":25},"ord":123},{"id":"p_oregano","name":"Oregano","cat":"Herbs & Botanicals","price":45,"emoji":"🌿","desc":"Dried oregano for pizza, pasta and salads.","tags":["italian herb"],"variants":[{"id":"25g","w":"25g","price":45},{"id":"50g","w":"50g","price":79}],"n":{"25g":30,"50g":25},"ord":124},{"id":"p_tulsi","name":"Tulsi Leaves (Dried)","cat":"Herbs & Botanicals","price":49,"emoji":"🌱","desc":"Dried holy basil leaves, brewed as an herbal infusion.","tags":["holy basil","tea"],"variants":[{"id":"25g","w":"25g","price":49},{"id":"50g","w":"50g","price":89}],"n":{"25g":30,"50g":25},"ord":125},{"id":"p_moringa","name":"Moringa Leaf Powder","cat":"Herbs & Botanicals","price":99,"emoji":"🥬","desc":"Fine powder of dried moringa leaves.","tags":["drumstick leaf"],"variants":[{"id":"100g","w":"100g","price":99},{"id":"250g","w":"250g","price":219}],"n":{"100g":30,"250g":20},"ord":126},{"id":"p_hibiscus","name":"Dried Hibiscus Petals","cat":"Herbs & Botanicals","price":59,"emoji":"🌺","desc":"Dried petals for tangy herbal tea.","tags":["hibiscus tea"],"variants":[{"id":"25g","w":"25g","price":59},{"id":"50g","w":"50g","price":105}],"n":{"25g":30,"50g":25},"ord":127},{"id":"p_rose","name":"Dried Rose Petals","cat":"Herbs & Botanicals","price":69,"emoji":"🌹","desc":"Edible dried rose petals for tea, sweets and garnish.","tags":["gulab"],"variants":[{"id":"25g","w":"25g","price":69},{"id":"50g","w":"50g","price":125}],"n":{"25g":30,"50g":20},"ord":128},{"id":"p_butterfly","name":"Butterfly Pea Flowers (Dried)","cat":"Herbs & Botanicals","price":79,"emoji":"💙","desc":"Dried blue flowers that colour tea and drinks.","tags":["blue tea","shankhpushpi"],"variants":[{"id":"25g","w":"25g","price":79},{"id":"50g","w":"50g","price":145}],"n":{"25g":25,"50g":20},"ord":129},{"id":"p_lemongrass","name":"Dried Lemongrass","cat":"Herbs & Botanicals","price":45,"emoji":"🌾","desc":"Dried lemongrass for tea and soups.","tags":["lemon grass"],"variants":[{"id":"25g","w":"25g","price":45},{"id":"50g","w":"50g","price":79}],"n":{"25g":30,"50g":25},"ord":130},{"id":"p_combo_daily","name":"Everyday Powders Combo","cat":"Combo Packs","price":319,"emoji":"📦","desc":"Three kitchen staples in one pack.","tags":["combo","value"],"variants":[{"id":"setof3","w":"Set of 3","price":319}],"n":{"setof3":25},"ord":131,"ing":"Includes: Turmeric Powder 200g, Kashmiri Chilli Powder 200g, Coriander Powder 200g"},{"id":"p_combo_south","name":"South Indian Kitchen Combo","cat":"Combo Packs","price":249,"emoji":"📦","desc":"Sambar, rasam and idli podi together.","tags":["combo","south indian"],"variants":[{"id":"setof3","w":"Set of 3","price":249}],"n":{"setof3":20},"ord":132,"ing":"Includes: Sambar Powder 200g, Rasam Powder 100g, Idli Podi (Gun Powder) 100g"},{"id":"p_combo_masala","name":"Masala Lovers Combo","cat":"Combo Packs","price":329,"emoji":"📦","desc":"Three popular blended masalas.","tags":["combo","masala"],"variants":[{"id":"setof3","w":"Set of 3","price":329}],"n":{"setof3":20},"ord":133,"ing":"Includes: Garam Masala 100g, Chole Masala 100g, Chicken Masala 100g"},{"id":"p_combo_whole","name":"Whole Spice Starter Combo","cat":"Combo Packs","price":379,"emoji":"📦","desc":"Five whole spices for a well-stocked kitchen.","tags":["combo","whole spices"],"variants":[{"id":"setof5","w":"Set of 5","price":379}],"n":{"setof5":15},"ord":134,"ing":"Includes: Cumin Seeds 100g, Black Pepper Whole 50g, Cinnamon Sticks 50g, Green Cardamom 25g, Cloves 25g"},{"id":"p_gift_classic","name":"Classic Spice Gift Box","cat":"Gift Packs","price":599,"emoji":"🎁","desc":"Six everyday spice jars in a gift box.","tags":["gift","hamper"],"variants":[{"id":"1box","w":"1 box","price":599}],"n":{"1box":15},"ord":135,"ing":"Includes: Turmeric Powder, Kashmiri Chilli Powder, Coriander Powder, Garam Masala, Cumin Seeds, Black Pepper Whole"},{"id":"p_gift_south","name":"South Indian Gift Hamper","cat":"Gift Packs","price":449,"emoji":"🎁","desc":"Sambar, rasam, idli podi and tamarind in a hamper.","tags":["gift","hamper","south indian"],"variants":[{"id":"1hamper","w":"1 hamper","price":449}],"n":{"1hamper":12},"ord":136,"ing":"Includes: Sambar Powder, Rasam Powder, Idli Podi, Tamarind"},{"id":"p_gift_tea","name":"Herbal Tea Gift Box","cat":"Gift Packs","price":399,"emoji":"🎁","desc":"Four dried botanicals for herbal teas.","tags":["gift","tea"],"variants":[{"id":"1box","w":"1 box","price":399}],"n":{"1box":12},"ord":137,"ing":"Includes: Dried Hibiscus Petals, Butterfly Pea Flowers, Dried Rose Petals, Tulsi Leaves (Dried)"}];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const inr = n => "₹" + Number(n || 0).toLocaleString("en-IN");
+const CATS = ["Pure Powders", "Whole Spices", "Blended Masalas", "Non-Veg Masalas", "South Indian", "Herbs & Botanicals", "Combo Packs", "Gift Packs"];
+const TINT = {"Pure Powders": "#fde8d7", "Whole Spices": "#f3e6d0", "Blended Masalas": "#e1f3e4", "Non-Veg Masalas": "#fdebc8", "South Indian": "#ece3fa", "Herbs & Botanicals": "#dff1ea", "Combo Packs": "#fbe3e8", "Gift Packs": "#e6e9fb"};
+const STEPS = ["Order Placed", "Packed", "Shipped", "Out for Delivery", "Delivered", "Cancelled"];
+const SKU = (pid, vid) => vid && vid !== "std" ? pid + "~" + vid : pid;
+const variantsOf = p => p.variants && p.variants.length ? p.variants : [{id: "std", w: "", price: p.price}];
+const fromKey = k => { const i = k.indexOf("|"); return i < 0 ? [k, "std"] : [k.slice(0, i), k.slice(i + 1)]; };
+const slug = w => /^standard$/i.test(w.trim()) ? "std" : w.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 12);
+let db = null, uid = null, MY = [], isAdmin = false, P = {}, S = {}, O = [], R = {}, SOLD = {}, ST = {}, W = [], RV = [], REV = [], cart = {}, sel = {};
+let view = "shop", pid = "", cat = "All", term = "", sortBy = "rel", maxP = "", inStock = false, topRated = false, gi = 0, qd = 1, tab = "dash", editId = null, pend = null;
+let open = false, step = "cart", doneId = "", doneEta = 0, dirty = false, oq = "", ost = "", cq = "", iq = "", ilow = false, range = "30", mq = "", pinMsg = null, loaded = {p: false, s: false};
+try { const c = JSON.parse(localStorage.getItem("szc")) || {}; Object.entries(c).forEach(([k, q]) => { if (q > 0) cart[k.includes("|") ? k : k + "|std"] = q; }); } catch (e) {}
+const cfg = () => ({fee: 30, free: 499, days: 3, low: 10, areas: [], store: "Spicezy", addr: "", phone: "", gstin: "", ...ST});
+const feeOf = s => s && s < cfg().free ? cfg().fee : 0;
+const setCount = () => { const n = Object.values(cart).reduce((a, q) => a + q, 0); $("#cc").textContent = n; $("#fc").textContent = n; $("#wc").textContent = W.length || ""; };
+const saveCart = () => { try { localStorage.setItem("szc", JSON.stringify(cart)); } catch (e) {} setCount(); };
+const stockOf = (id, vid) => S[SKU(id, vid)] ?? 0;
+const list = () => Object.entries(P).map(([id, p]) => ({id, ...p, vs: variantsOf(p)}));
+const totalStock = p => p.vs.reduce((a, v) => a + stockOf(p.id, v.id), 0);
+const minPrice = p => Math.min(...p.vs.map(v => v.price));
+const ratingOf = p => R[p.id] && R[p.id].n ? {a: R[p.id].avg, n: R[p.id].n} : p.rating ? {a: p.rating, n: 0} : null;
+const stars = n => "★".repeat(n) + "☆".repeat(5 - n);
+const starsA = a => { const r = Math.round(a); return "★".repeat(r) + "☆".repeat(5 - r); };
+const vlabel = (p, v) => v && v.w ? " · " + v.w : "";
+function toast(m) { const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 3500); }
+const pic = (p, cls = "") => `<div class="pic ${cls}" style="background:${TINT[p.cat] || "#eee"}">${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">` : esc(p.emoji || "🌶️")}</div>`;
+const cartItems = () => Object.entries(cart).map(([k, q]) => { const [id, vid] = fromKey(k), p = P[id], v = p && variantsOf(p).find(x => x.id === vid); return p && v ? {key: k, id, vid, q, p, v} : null; }).filter(Boolean);
+const sub = () => cartItems().reduce((a, i) => a + i.v.price * i.q, 0);
+const mine = () => (isAdmin ? O.filter(o => o.uid === uid) : MY).slice().sort((a, b) => b.ts - a.ts);
+const track = o => o.status === "Cancelled" ? `<div class="bad"><b>Cancelled</b></div>` : `<div class="trk">${STEPS.slice(0, 5).map((t, i) => `<span class="${i <= STEPS.indexOf(o.status) ? "on" : ""}">${t}</span>`).join("")}</div>`;
+const dt = t => t ? new Date(t).toLocaleDateString("en-IN") : "—";
+const dtm = t => new Date(t).toLocaleString("en-IN");
+const dayK = t => { const d = new Date(t); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+const bought = id => mine().some(o => o.status !== "Cancelled" && (o.items || []).some(i => i.id === id));
+const topIds = () => Object.entries(SOLD).filter(([id, n]) => n > 0 && P[id]).sort((a, b) => b[1] - a[1]).slice(0, 4).map(x => x[0]);
+const nav = h => { if (location.hash === h) route(); else location.hash = h; };
+
+/* ---------- Delivery PIN check (areas are set by the admin in Settings; none set = every valid PIN) ---------- */
+function dlv(pin) {
+  pin = String(pin || "").trim();
+  if (!/^[1-9]\d{5}$/.test(pin)) return {ok: false, msg: "Enter a valid 6-digit PIN code."};
+  const areas = cfg().areas || [], a = areas.slice().sort((x, y) => y.p.length - x.p.length).find(x => pin.startsWith(x.p));
+  if (areas.length && !a) return {ok: false, msg: "Sorry, we do not deliver to " + pin + " yet."};
+  const days = a ? a.d : cfg().days;
+  return {ok: true, days, msg: "Delivery available to " + pin + ". Estimated delivery by " + new Date(Date.now() + days * 864e5).toLocaleDateString("en-IN", {weekday: "short", day: "numeric", month: "short"}) + " (cash on delivery)."};
+}
+
+/* ---------- Cart ---------- */
+function addToCart(id, vid, q = 1, quiet) {
+  const p = P[id]; if (!p) return false;
+  const vs = variantsOf(p), v = vs.find(x => x.id === vid) || vs.find(x => stockOf(id, x.id) > 0) || vs[0], k = id + "|" + v.id, n = stockOf(id, v.id), have = cart[k] || 0;
+  if (n <= 0) { toast("Sorry, " + p.name + vlabel(p, v) + " is out of stock."); return false; }
+  if (have >= n) { toast("Only " + n + " in stock."); return false; }
+  cart[k] = Math.min(n, have + q); if (have + q > n) toast("Only " + n + " available. Quantity adjusted.");
+  saveCart(); if (!quiet) { open = true; step = "cart"; doneId = ""; paintDrawer(); } return true;
+}
+function fixCart() {   /* drop deleted products/sizes, never keep more than the stock that exists */
+  if (!loaded.p) return;
+  Object.keys(cart).forEach(k => { const [id, vid] = fromKey(k), p = P[id];
+    if (!p || !variantsOf(p).some(v => v.id === vid)) delete cart[k]; else if (loaded.s && cart[k] > stockOf(id, vid)) { cart[k] = stockOf(id, vid); if (!cart[k]) delete cart[k]; } });
+  saveCart();
+}
+function reorder(o) {
+  let added = 0, skipped = 0;
+  (o.items || []).forEach(i => { if (P[i.id] && addToCart(i.id, i.vid || "std", i.q, true)) added++; else skipped++; });
+  if (added) { open = true; step = "cart"; doneId = ""; paintDrawer(); }
+  toast(added ? "Added " + added + " item(s) to your cart" + (skipped ? ". " + skipped + " unavailable." : ".") : "Those items are not available right now.");
+}
+
+let me = {id: null, name: "", email: null}, prof = {n: "", p: "", a: "", z: ""}, FB = [], mcats = false, out = false, lastFb = 0;
+let appC = null, cmsg = "", cok = false, form = {n: "", p: "", z: "", a: "", c: ""}, C = {}, CU = {}, PUB = [];
+let srv = false, local = false, lastV = "";
+const live = c => c.active && (!c.exp || Date.now() <= c.exp) && (!c.start || Date.now() >= c.start);
+const cdesc = c => (c.type === "percent" ? c.value + "% off" : inr(c.value) + " off") + (c.min ? " above " + inr(c.min) : "");
+const disc = (sb, c) => !c ? 0 : Math.min(sb, c.type === "percent" ? Math.floor(sb * c.value / 100) : c.value);
+const keepForm = () => { if ($("#cn")) form = {n: $("#cn").value, p: $("#cp").value, z: $("#cz").value, a: $("#ca").value, c: $("#cc2") ? $("#cc2").value : form.c}; };
+/* Coupon validation: always re-read from the database, never trust the browser's copy */
+async function check(code, sb) {
+  code = String(code || "").trim().toUpperCase(); if (!code) return {msg: "Enter a coupon code."};
+  if (srv) { try { return {ok: true, c: await api("POST", "/api/coupon", {code, sub: sb})}; } catch (e) { return {msg: e.message}; } }
+  const g = await db.doc("coupons/" + code).get(); if (!g.exists) return {msg: "Invalid coupon code."};
+  const c = {...g.data(), code};
+  if (!c.active) return {msg: "This coupon is not active."};
+  if (c.start && Date.now() < c.start) return {msg: "This coupon is not valid yet."};
+  if (c.exp && Date.now() > c.exp) return {msg: "This coupon has expired."};
+  if (sb < (c.min || 0)) return {msg: "Add items worth " + inr(c.min) + " or more to use this coupon."};
+  const u = await db.doc("couponUse/" + code).get(); if (c.limit && u.exists && u.data().n >= c.limit) return {msg: "This coupon has reached its usage limit."};
+  return {ok: true, c};
+}
+async function applyCoupon() { keepForm(); const r = await check(form.c, sub()); appC = r.ok ? r.c : null; cok = !!r.ok; cmsg = r.ok ? "Coupon " + r.c.code + " applied: " + cdesc(r.c) : r.msg; paintDrawer(); }
+async function saveCoupon() {
+  const code = $("#kc").value.trim().toUpperCase(), type = $("#kt").value, value = Math.round(+$("#kv").value), min = Math.max(0, Math.round(+$("#km").value || 0)), limit = Math.max(0, Math.floor(+$("#kl").value || 0)), f = $("#kf").value, u = $("#ku").value;
+  if (!/^[A-Z0-9]{3,20}$/.test(code)) return toast("Code: 3-20 letters or numbers, no spaces.");
+  if (!(value > 0) || (type === "percent" && value > 100)) return toast("Enter a valid discount (percent must be 1-100).");
+  const start = f ? new Date(f + "T00:00:00").getTime() : 0, exp = u ? new Date(u + "T23:59:59").getTime() : 0;
+  if (exp && start && exp < start) return toast("The end date is before the start date.");
+  try { await db.doc("coupons/" + code).set({code, type, value, min, start, exp, limit, active: C[code] ? C[code].active : true, show: $("#ks").checked}); toast("Coupon saved"); } catch (e) { toast("Could not save: " + (e.message || e.code)); }
+}
+
+const pkey = () => "szprof_" + (uid || "x");
+function loadProfile() { try { prof = Object.assign({n: "", p: "", a: "", z: ""}, JSON.parse(localStorage.getItem(pkey()))); } catch (e) {} resetForm(); }
+function resetForm() { form = {n: prof.n || me.name || "", p: prof.p, z: prof.z || "", a: prof.a, c: ""}; }
+function applyTheme() { let t = ""; try { t = localStorage.getItem("szTheme") || ""; } catch (e) {} if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme; }
+const rvKey = () => "szrv_" + (uid || "x");
+function loadRV() { try { RV = JSON.parse(localStorage.getItem(rvKey())) || []; } catch (e) { RV = []; } }
+function trackView(id) { RV = [id, ...RV.filter(x => x !== id)].slice(0, 10); try { localStorage.setItem(rvKey(), JSON.stringify(RV)); } catch (e) {} }
+/* ---------- Login (demo mode only): PBKDF2-hashed passwords, expiring session token ---------- */
+const hex = b => [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("");
+const rnd = n => hex(crypto.getRandomValues(new Uint8Array(n)));
+async function hashPw(pw, saltHex) { const salt = Uint8Array.from(saltHex.match(/../g).map(h => parseInt(h, 16))), k = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveBits"]); return hex(await crypto.subtle.deriveBits({name: "PBKDF2", salt, iterations: 150000, hash: "SHA-256"}, k, 256)); }
+const accts = () => { try { return JSON.parse(localStorage.getItem("szacc")) || {}; } catch (e) { return {}; } };
+function gate() { return new Promise(async res => {
+  let mode = "login", fails = 0, lock = 0, nmv = "";
+  const sh = async t => hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)));
+  const eid = async em => (await sh("spicezy:" + em)).slice(0, 32);
+  const get = async em => { if (local) return accts()[em] || null; const g = await db.doc("accounts/" + await eid(em)).get(); return g.exists ? g.data() : null; };
+  const put = async a => { if (local) { const all = accts(); all[a.email] = a; localStorage.setItem("szacc", JSON.stringify(all)); } else await db.doc("accounts/" + await eid(a.email)).set(a); };
+  window.szSess = {get, put};
+  if (srv) { try { return res(await api("GET", "/api/me")); } catch (e) {} }
+  if (!srv) try { const ss = JSON.parse(localStorage.getItem("szsess")), a = ss && await get(ss.em); if (a && ss.exp > Date.now() && a.sessh === await sh(ss.tok)) return res(a); } catch (e) {}
+  const draw = (err, em) => {
+    $("#main").innerHTML = `<div class="panel" style="max-width:380px;margin:30px auto"><h2 style="margin-top:0">${mode === "login" ? "Log in to Spicezy" : "Create your account"}</h2>${mode === "register" ? `<input id="an" placeholder="Your name" autocomplete="name" value="${esc(nmv)}">` : ""}<input id="ae" type="email" placeholder="Email" autocomplete="username" value="${esc(em || "")}"><input id="ap" type="password" placeholder="Password (min 8 characters)" autocomplete="${mode === "login" ? "current-password" : "new-password"}"><div class="bad" style="margin:6px 0">${esc(err || "")}</div><button class="btn3" id="ago" style="width:100%">${mode === "login" ? "Log in" : "Create account"}</button><p style="text-align:center"><a href="#" id="aswap">${mode === "login" ? "New here? Create an account" : "Have an account? Log in"}</a></p><p class="mu" style="font-size:12px">${srv ? "Your password is hashed on the store server. The first account created becomes the store admin." : local ? "Demo mode: accounts live in this browser only. The first account created becomes the store admin." : "Your account is saved in the store database. Store admins are chosen from claude.ai sharing permissions."}</p></div>`;
+    $("#aswap").onclick = ev => { ev.preventDefault(); mode = mode === "login" ? "register" : "login"; draw(); };
+    $("#ago").onclick = go; $("#ap").onkeydown = ev => { if (ev.key === "Enter") go(); };
+  };
+  async function go() {
+    const em = $("#ae").value.trim().toLowerCase(), pw = $("#ap").value; nmv = $("#an") ? $("#an").value : nmv;
+    if (Date.now() < lock) return draw("Too many attempts. Wait " + Math.ceil((lock - Date.now()) / 1000) + "s.", em);
+    if (!/^\S+@\S+\.\S+$/.test(em)) return draw("Enter a valid email address.", em);
+    if (!srv && !(window.crypto && crypto.subtle)) return draw("Secure login needs https:// or localhost.", em);
+    try {
+      if (srv) { const nm = nmv.trim(); if (mode === "register" && !nm) return draw("Enter your name.", em); return res(await api("POST", mode === "login" ? "/api/login" : "/api/register", {name: nm, email: em, password: pw})); }
+      let acct = await get(em);
+      if (mode === "register") {
+        const nm = nmv.trim(); if (!nm) return draw("Enter your name.", em); if (pw.length < 8) return draw("Password must be at least 8 characters.", em); if (acct) return draw("An account with this email already exists.", em);
+        const salt = rnd(16); acct = {id: "u_" + rnd(8), name: nm, email: em, salt, hash: await hashPw(pw, salt), admin: local && !Object.keys(accts()).length, created: Date.now()};
+      } else if (!acct || (await hashPw(pw, acct.salt)) !== acct.hash) { if (++fails >= 5) { lock = Date.now() + 30000; fails = 0; } return draw("Incorrect email or password.", em); }
+      const tok = rnd(32); acct.sessh = await sh(tok); await put(acct);
+      localStorage.setItem("szsess", JSON.stringify({em, tok, exp: Date.now() + 8 * 36e5})); res(acct);
+    } catch (e) { draw(srv ? (e.message || "Login failed.") : "Could not reach the store database. " + (e.message || ""), em); }
+  }
+  draw(); }); }
+async function logout() {
+  if (!confirm("Log out of Spicezy?")) return;
+  if (srv) { try { await api("POST", "/api/logout"); } catch (e) {} }
+  try { const ss = JSON.parse(localStorage.getItem("szsess")); localStorage.removeItem("szsess"); localStorage.removeItem("szc"); const a = ss && window.szSess && await szSess.get(ss.em); if (a) { delete a.sessh; await szSess.put(a); } } catch (e) {}
+  location.reload();
+}
+
+
+
+/* ---------- Menu ---------- */
+function paintMenu() {
+  const nm = me.name || "Guest";
+  $("#menu").innerHTML = `<div class="mh"><span class="av">${esc(nm.charAt(0).toUpperCase())}</span><div><b>${esc(nm)}</b><div class="mu">${esc(me.email || (isAdmin ? "Admin" : "Customer"))}</div></div><button id="closeMenu" aria-label="Close menu">✕</button></div>
+  <button data-m="home">🏠 Home</button><button data-m="cats">🗂️ Categories ${mcats ? "▴" : "▾"}</button><div class="msub" ${mcats ? "" : "hidden"}>${CATS.map(c => `<button data-mc="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+  <button data-m="wish">♡ Wishlist</button><button data-m="orders">📦 My Orders</button><button data-m="feedback">💬 Feedback</button><button data-m="profile">👤 Profile</button><button data-m="settings">⚙️ Settings</button>${isAdmin ? `<button data-m="admin">🛠️ Admin panel</button>` : ""}<button data-m="logout">🚪 Log out</button>`;
+}
+function menuOpen(b) { $("#menu").classList.toggle("on", b); $("#mshade").classList.toggle("on", b); if (b) paintMenu(); }
+function menu(m) {
+  if (m === "cats") { mcats = !mcats; return paintMenu(); }
+  menuOpen(false);
+  if (m === "logout") return logout();
+  if (m === "home") { cat = "All"; term = ""; $("#q").value = ""; nav("#/"); } else nav("#/" + m);
+}
+
+/* ---------- Feedback, profile, settings views ---------- */
+const fbRow = f => `<div class="panel"><div class="row"><b>${esc(f.type)}${f.rating ? " · " + stars(f.rating) : ""}</b><span class="mu">${new Date(f.ts).toLocaleDateString("en-IN")}</span></div>${f.orderId ? `<div class="mu">Order ${esc(f.orderId)}</div>` : ""}<p style="margin:6px 0">${esc(f.msg)}</p><span class="mu">Status: ${esc(f.status || "New")}</span></div>`;
+function feedbackV() {
+  if (!uid) return `<div class="panel">Please log in to send feedback.</div>`;
+  const my = FB.filter(f => f.uid === uid);
+  return `<div class="panel"><h2 style="margin-top:0">💬 Send feedback</h2><div class="fg"><select id="ft"><option>Review</option><option>Complaint</option><option>Suggestion</option></select><select id="fr"><option value="0">Rating (optional)</option>${[5, 4, 3, 2, 1].map(n => `<option value="${n}">${stars(n)}</option>`).join("")}</select><select id="fo"><option value="">Related order (optional)</option>${mine().map(o => `<option>${esc(o.id)}</option>`).join("")}</select></div><textarea id="fm" rows="4" maxlength="1000" placeholder="Tell us what you think (10 to 1000 characters)" style="margin:8px 0"></textarea><button class="btn3" data-sendfb>Submit</button></div><h3>Your feedback</h3>${my.length ? my.map(fbRow).join("") : `<p class="mu">Nothing sent yet.</p>`}`;
+}
+async function sendFeedback() {
+  if (!uid) return toast("Please log in first.");
+  const msg = $("#fm").value.trim();
+  if (msg.length < 10) return toast("Please write at least 10 characters.");
+  if (Date.now() - lastFb < 10000) return toast("Please wait a few seconds before sending again.");
+  try { await db.doc("feedback/" + uid + "_" + Date.now()).set({uid, name: me.name || "Customer", type: $("#ft").value, rating: +$("#fr").value, orderId: $("#fo").value, msg: msg.slice(0, 1000), status: "New", ts: Date.now()}); lastFb = Date.now(); $("#fm").value = ""; toast("Thank you! Your feedback was sent."); } catch (e) { toast("Could not send: " + (e.message || e.code)); }
+}
+
+function profileV() {
+  const m = mine(), spent = m.filter(o => o.status !== "Cancelled").reduce((a, o) => a + o.total, 0);
+  return `<div class="panel"><h2 style="margin-top:0">👤 Profile</h2><div class="row"><span class="mu">Name</span><b>${esc(me.name || "—")}</b></div><div class="row"><span class="mu">Email</span><b>${esc(me.email || "Not shared")}</b></div><div class="row"><span class="mu">Role</span><b>${isAdmin ? "Admin" : "Customer"}</b></div><div class="row"><span class="mu">Orders</span><b>${m.length} · ${inr(spent)}</b></div><div class="row"><span class="mu">Wishlist</span><b>${W.length} item(s)</b></div>
+  <p><a href="#/orders">My orders</a> · <a href="#/wish">Wishlist</a></p></div>
+  <div class="panel"><h3 style="margin-top:0">Saved delivery details</h3><input id="pn" placeholder="Full name" value="${esc(prof.n)}"><input id="pp" placeholder="Phone (10 digits)" inputmode="numeric" value="${esc(prof.p)}"><input id="pz" placeholder="PIN code (6 digits)" inputmode="numeric" maxlength="6" value="${esc(prof.z)}"><textarea id="pa" rows="3" placeholder="Delivery address">${esc(prof.a)}</textarea><button class="btn3" data-saveprof>Save</button> <button class="btn2" data-logout>Log out</button></div>`;
+}
+function settingsV() {
+  let th = "auto"; try { th = localStorage.getItem("szTheme") || "auto"; } catch (e) {}
+  return `<div class="panel"><h2 style="margin-top:0">⚙️ Settings</h2><label class="mu">Theme <select id="th">${[["auto", "Match my device"], ["light", "Light"], ["dark", "Dark"]].map(o => `<option value="${o[0]}"${th === o[0] ? " selected" : ""}>${o[1]}</option>`).join("")}</select></label></div><div class="panel"><button class="btn2" data-clrcart>Empty my cart</button> <button class="btn2" data-clrprof>Forget saved delivery details</button></div><p class="mu">Spicezy · ${local ? "Demo mode (data stays in this browser)" : "Live store"}</p>`;
+}
+
+
+
+/* ---------- Product cards and shop ---------- */
+const selV = p => p.vs.find(x => x.id === sel[p.id]) || p.vs.find(x => stockOf(p.id, x.id) > 0) || p.vs[0];
+const stockTag = n => n <= 0 ? `<div class="bad">Out of stock</div>` : n <= cfg().low ? `<div class="bad">Only ${n} left!</div>` : `<div class="ok">In stock</div>`;
+const rateHtml = p => { const r = ratingOf(p); return r ? `<div class="st">${starsA(r.a)} <span class="mu">${esc(r.a)}${r.n ? " (" + r.n + ")" : ""}</span></div>` : `<div class="mu">No reviews yet</div>`; };
+function card(p) {
+  const v = selV(p), n = stockOf(p.id, v.id), best = topIds().includes(p.id), wished = W.includes(p.id);
+  return `<div class="card">${best ? `<span class="badge">Best seller</span>` : ""}<button class="heart" data-wish="${esc(p.id)}" aria-label="${wished ? "Remove from" : "Add to"} wishlist">${wished ? "♥" : "♡"}</button>
+    <a href="#/p/${encodeURIComponent(p.id)}" aria-label="${esc(p.name)}">${pic(p)}</a><h3><a href="#/p/${encodeURIComponent(p.id)}">${esc(p.name)}</a></h3>${rateHtml(p)}
+    ${p.vs.length > 1 ? `<select data-vsel="${esc(p.id)}" aria-label="Weight">${p.vs.map(x => `<option value="${esc(x.id)}"${x.id === v.id ? " selected" : ""}${stockOf(p.id, x.id) <= 0 ? " disabled" : ""}>${esc(x.w)} · ${inr(x.price)}</option>`).join("")}</select>` : ""}
+    <div class="pr">${inr(v.price)}</div><div class="mu">${esc(p.desc)}</div>${stockTag(n)}
+    <button class="btn" data-add="${esc(p.id)}" data-vid="${esc(v.id)}"${n <= 0 ? " disabled" : ""}>Add to Cart</button></div>`;
+}
+function filtered() {
+  const words = term.toLowerCase().split(/\s+/).filter(Boolean), mp = {"1": [0, 100], "2": [100, 250], "3": [250, 500], "4": [500, 1e9]}[maxP];
+  let l = list().filter(p => (cat === "All" || p.cat === cat) && words.every(w => (p.name + " " + p.desc + " " + p.cat + " " + (p.tags || []).join(" ") + " " + p.vs.map(v => v.w).join(" ")).toLowerCase().includes(w))
+    && (!mp || (minPrice(p) >= mp[0] && minPrice(p) < mp[1])) && (!inStock || totalStock(p) > 0) && (!topRated || (ratingOf(p) && ratingOf(p).a >= 4)));
+  const by = {price: (a, b) => minPrice(a) - minPrice(b), priced: (a, b) => minPrice(b) - minPrice(a), rate: (a, b) => (ratingOf(b)?.a || 0) - (ratingOf(a)?.a || 0), name: (a, b) => a.name.localeCompare(b.name),
+    newest: (a, b) => (b.ts || 0) - (a.ts || 0), best: (a, b) => (SOLD[b.id] || 0) - (SOLD[a.id] || 0)}[sortBy];
+  return by ? l.sort(by) : l;
+}
+function shop() {
+  const l = filtered(), fresh = !term && cat === "All" && !maxP && !inStock && !topRated;
+  const best = fresh ? topIds().map(id => list().find(p => p.id === id)).filter(Boolean) : [], rv = fresh ? RV.map(id => list().find(p => p.id === id)).filter(Boolean).slice(0, 8) : [];
+  return `<div class="hero"><h1>Spicezy</h1><div>Fresh Indian spices, delivered · Free delivery above ${inr(cfg().free)} · Cash on delivery</div>${PUB.filter(live).map(c => `<span class="chip">🏷️ <b>${esc(c.code)}</b> ${esc(cdesc(c))}</span>`).join("")}</div>
+  <div class="bar"><select id="sortSel" aria-label="Sort">${[["rel", "Sort: Featured"], ["best", "Best selling"], ["newest", "Newest"], ["price", "Price: low to high"], ["priced", "Price: high to low"], ["rate", "Top rated"], ["name", "Name A–Z"]].map(([v, t]) => `<option value="${v}"${sortBy === v ? " selected" : ""}>${t}</option>`).join("")}</select>
+    <select id="priceSel" aria-label="Price range">${[["", "Any price"], ["1", "Under ₹100"], ["2", "₹100 – ₹250"], ["3", "₹250 – ₹500"], ["4", "₹500 & above"]].map(([v, t]) => `<option value="${v}"${maxP === v ? " selected" : ""}>${t}</option>`).join("")}</select>
+    <label><input type="checkbox" id="stockChk"${inStock ? " checked" : ""}>In stock only</label><label><input type="checkbox" id="rateChk"${topRated ? " checked" : ""}>4★ &amp; up</label><span class="mu">${l.length} product${l.length === 1 ? "" : "s"}</span>
+    ${!fresh ? `<button class="btn2" data-clrf>Clear filters</button>` : ""}</div>` +
+  (best.length ? `<h2 class="sec">🔥 Best sellers</h2><div class="hs">${best.map(card).join("")}</div>` : "") +
+  (rv.length ? `<h2 class="sec">🕘 Recently viewed</h2><div class="hs">${rv.map(card).join("")}</div>` : "") +
+  (fresh && (best.length || rv.length) ? `<h2 class="sec">All products</h2>` : "") +
+  (l.length ? `<div class="grid">${l.map(card).join("")}</div>` : `<p class="mu">${Object.keys(P).length ? "No products match your search or filters." : (isAdmin ? "No products yet. Open Admin → Settings to load the starter catalogue, or add products." : "No products yet. The admin can add some.")}</p>`);
+}
+function paintSub() { $("#sub").innerHTML = view !== "shop" ? "" : ["All", ...CATS].map(c => `<button class="${c === cat ? "on" : ""}" data-cat="${esc(c)}">${esc(c)}</button>`).join(""); }
+
+/* ---------- Product detail ---------- */
+function related(p) { return list().filter(x => x.id !== p.id && x.cat === p.cat).sort((a, b) => (SOLD[b.id] || 0) - (SOLD[a.id] || 0) || a.name.localeCompare(b.name)).slice(0, 4); }
+function detail() {
+  const p = list().find(x => x.id === pid);
+  if (!p) return `<div class="panel">${Object.keys(P).length ? "This product is no longer available." : "Loading…"} <a href="#/">Back to the store</a></div>`;
+  const v = selV(p), n = stockOf(p.id, v.id), r = ratingOf(p), imgs = [p.img, ...(p.gallery || [])].filter(Boolean), wished = W.includes(p.id), z = pinMsg ? pinMsg.z : (prof.z || "");
+  const can = uid && bought(p.id), rel = related(p), rvw = RV.filter(id => id !== p.id).map(id => list().find(x => x.id === id)).filter(Boolean).slice(0, 6);
+  const mineRev = REV.find(x => x.uid === uid);
+  return `<p class="mu"><a href="#/">Store</a> › <a href="#/" data-cat="${esc(p.cat)}">${esc(p.cat)}</a> › ${esc(p.name)}</p>
+  <div class="pd"><div>${p.img || imgs.length ? `<div class="pic big" style="background:${TINT[p.cat] || "#eee"}"><img src="${esc(imgs[gi] || imgs[0])}" alt="${esc(p.name)}"></div>${imgs.length > 1 ? `<div class="thumbs">${imgs.map((u, i) => `<button data-gi="${i}" class="${i === gi ? "on" : ""}" aria-label="Photo ${i + 1}"><img src="${esc(u)}" alt=""></button>`).join("")}</div>` : ""}` : pic(p, "big")}</div>
+  <div><h1 style="margin:0 0 4px;font-size:24px">${esc(p.name)}</h1><div class="mu">${esc(p.cat)}</div>${rateHtml(p)}
+    <div class="pr" style="font-size:28px;margin:8px 0">${inr(v.price)}</div>
+    ${p.vs.length > 1 || (p.vs[0].w && p.vs[0].id !== "std") ? `<div class="mu">Weight / pack</div><div class="vp">${p.vs.map(x => `<button data-vopt="${esc(x.id)}" class="${x.id === v.id ? "on" : ""}"${stockOf(p.id, x.id) <= 0 ? " disabled" : ""}>${esc(x.w)}<br><small>${inr(x.price)}</small></button>`).join("")}</div>` : ""}
+    ${stockTag(n)}
+    <div style="display:flex;gap:10px;align-items:center;margin:10px 0;flex-wrap:wrap"><span class="qty"><button data-dq="-1" aria-label="Less">−</button>${qd}<button data-dq="1" aria-label="More">+</button></span>
+      <button class="btn" data-addd="${esc(p.id)}"${n <= 0 ? " disabled" : ""}>Add to Cart</button><button class="btn3" style="width:auto" data-buy="${esc(p.id)}"${n <= 0 ? " disabled" : ""}>Buy now</button><button class="btn2" data-wish="${esc(p.id)}">${wished ? "♥ In wishlist" : "♡ Add to wishlist"}</button></div>
+    <div class="panel"><b>🚚 Check delivery</b><div style="display:flex;gap:6px"><input id="dz" placeholder="Enter 6-digit PIN code" inputmode="numeric" maxlength="6" value="${esc(z)}"><button class="btn2" data-dchk>Check</button></div>${pinMsg ? `<div class="${pinMsg.ok ? "ok" : "bad"}">${esc(pinMsg.msg)}</div>` : `<div class="mu">Free delivery above ${inr(cfg().free)}; ${inr(cfg().fee)} below that.</div>`}</div>
+    <p>${esc(p.desc)}</p>${p.ing ? `<p class="mu">${esc(p.ing)}</p>` : ""}${(p.tags || []).length ? `<p>${p.tags.map(t => `<span class="pill">${esc(t)}</span>`).join(" ")}</p>` : ""}</div></div>
+  <h2 class="sec">Customer reviews</h2><div class="panel">${r ? `<div class="st" style="font-size:18px">${starsA(r.a)} <b>${esc(r.a)}</b> <span class="mu">${r.n ? "from " + r.n + " review" + (r.n > 1 ? "s" : "") : "store rating"}</span></div>` : `<p class="mu">No reviews yet.</p>`}
+    ${REV.map(x => `<div style="border-top:1px solid var(--ln);padding:8px 0"><b>${esc(x.name)}</b> <span class="st">${stars(x.rating)}</span> <span class="mu">${dt(x.ts)} · Verified purchase</span><p style="margin:4px 0">${esc(x.text)}</p>${isAdmin || x.uid === uid ? `<button class="btn2" data-rvdel="${esc(x.pid + "_" + x.uid)}">Delete</button>` : ""}</div>`).join("")}
+    ${!uid ? "" : can ? `<div style="border-top:1px solid var(--ln);padding-top:10px"><b>${mineRev ? "Update your review" : "Write a review"}</b><select id="rvr"><option value="0">Rating</option>${[5, 4, 3, 2, 1].map(k => `<option value="${k}"${mineRev && mineRev.rating === k ? " selected" : ""}>${stars(k)}</option>`).join("")}</select><textarea id="rvt" rows="3" maxlength="1000" placeholder="Share your experience (min 5 characters)">${esc(mineRev ? mineRev.text : "")}</textarea><button class="btn" data-sendrv="${esc(p.id)}">Submit review</button></div>` : `<p class="mu">Only customers who bought this product can review it.</p>`}</div>
+  ${rel.length ? `<h2 class="sec">Related products</h2><div class="hs">${rel.map(card).join("")}</div>` : ""}
+  ${rvw.length ? `<h2 class="sec">Recently viewed</h2><div class="hs">${rvw.map(card).join("")}</div>` : ""}`;
+}
+async function loadReviews(id) {
+  try { const q = db.collection("reviews").where("pid", "==", id); const s = q.get ? await q.get() : null; if (s && pid === id) { REV = s.docs.map(d => d.data()).sort((a, b) => b.ts - a.ts); if (view === "pd") paint(); } } catch (e) {}
+}
+async function recomputeRating(id) {
+  if (srv) return; const s = await db.collection("reviews").where("pid", "==", id).get(), rs = s.docs.map(d => d.data());
+  if (!rs.length) { try { await db.doc("ratings/" + id).delete(); } catch (e) {} return; }
+  await db.doc("ratings/" + id).set({avg: Math.round(rs.reduce((a, x) => a + x.rating, 0) / rs.length * 10) / 10, n: rs.length});
+}
+async function sendReview(id) {
+  const rating = +$("#rvr").value, text = $("#rvt").value.trim();
+  if (!(rating >= 1)) return toast("Choose a star rating."); if (text.length < 5) return toast("Please write at least 5 characters.");
+  try { await db.doc("reviews/" + id + "_" + uid).set({pid: id, uid, name: me.name || "Customer", rating, text: text.slice(0, 1000), ts: Date.now()}); await recomputeRating(id); toast("Thank you for your review!"); await loadReviews(id); }
+  catch (e) { toast(e.message || "Could not save your review."); }
+}
+async function delReview(rid) { const id = rid.slice(0, rid.lastIndexOf("_")); try { await db.doc("reviews/" + rid).delete(); await recomputeRating(id); toast("Review deleted"); await loadReviews(id); } catch (e) { toast(e.message || "Could not delete."); } }
+async function toggleWish(id) {
+  W = W.includes(id) ? W.filter(x => x !== id) : [...W, id]; setCount(); paint();
+  try { await db.doc("wish/" + uid).set({ids: W}); } catch (e) { toast("Could not save wishlist: " + (e.message || e.code)); }
+}
+function wishV() { const l = W.map(id => list().find(p => p.id === id)).filter(Boolean); return `<h2 style="margin-top:0">♥ My wishlist</h2>` + (l.length ? `<div class="grid">${l.map(card).join("")}</div>` : `<div class="panel">Your wishlist is empty. Tap ♡ on any product to save it here.</div>`); }
+
+/* ---------- My orders, tracking, reorder, invoice ---------- */
+function orderCard(o) {
+  const active = !["Delivered", "Cancelled"].includes(o.status), hist = o.hist && o.hist.length ? o.hist : [{s: "Order Placed", t: o.ts}];
+  return `<div class="panel"><div class="row"><div><b>${esc(o.id)}</b> <span class="mu">${dtm(o.ts)}</span></div><b>${inr(o.total)}</b></div>
+    <div class="mu">${(o.items || []).map(i => esc(i.n) + (i.w ? " (" + esc(i.w) + ")" : "") + " × " + i.q).join(", ")}</div>
+    <div class="row"><span class="pill ${o.status === "Delivered" ? "ok" : o.status === "Cancelled" ? "bad" : ""}">${esc(o.status)}</span>${active && o.eta ? `<span class="mu">Estimated delivery: ${dt(o.eta)}</span>` : ""}</div>${track(o)}
+    <details><summary class="mu" style="cursor:pointer">Tracking history &amp; delivery details</summary><ul style="margin:6px 0;padding-left:18px">${hist.map(h => `<li>${esc(h.s)} <span class="mu">${dtm(h.t)}</span></li>`).join("")}</ul><div class="mu">Deliver to: ${esc(o.name)}, ${esc(o.addr)}${o.pin ? " – " + esc(o.pin) : ""}</div></details>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn2" data-reorder="${esc(o.id)}">🔁 Reorder</button><button class="btn2" data-inv="${esc(o.id)}">🧾 Invoice</button>${o.status === "Order Placed" ? `<button class="btn2" data-ocancel="${esc(o.id)}">Cancel order</button>` : ""}${o.status === "Delivered" ? (o.items || []).slice(0, 1).map(i => `<a class="btn2" style="text-decoration:none" href="#/p/${encodeURIComponent(i.id)}">⭐ Review</a>`).join("") : ""}</div></div>`;
+}
+const myList = () => { const q = mq.toLowerCase(); const m = mine().filter(o => !q || (o.id + " " + (o.items || []).map(i => i.n).join(" ") + " " + o.status).toLowerCase().includes(q)); return m.length ? m.map(orderCard).join("") : `<div class="panel">${mine().length ? "No orders match your search." : "No orders yet. <a href='#/'>Start shopping</a>."}</div>`; };
+function ordersV() { return `<h2 style="margin-top:0">📦 My orders</h2><input id="mq" placeholder="Search by order ID, product or status" value="${esc(mq)}"><div id="olist">${myList()}</div>`; }
+async function setStatus(o, status) {
+  if (srv) { await api("PATCH", "/api/c/orders/" + encodeURIComponent(o.id), {status}); if (window.szKick) szKick(); return; }
+  const was = o.status === "Cancelled", now = status === "Cancelled", per = {};
+  if (was !== now) {
+    for (const i of o.items || []) { const k = SKU(i.id, i.vid), g = await db.doc("stock/" + k).get(); if (g.exists) await db.doc("stock/" + k).set({n: Math.max(0, g.data().n + (now ? i.q : -i.q))}); per[i.id] = (per[i.id] || 0) + i.q; }
+    for (const [id, n] of Object.entries(per)) { const g = await db.doc("sold/" + id).get(); await db.doc("sold/" + id).set({n: Math.max(0, (g.exists ? g.data().n : 0) + (now ? -n : n))}); }
+    if (o.coupon) { const u = await db.doc("couponUse/" + o.coupon).get(); await db.doc("couponUse/" + o.coupon).set({n: Math.max(0, (u.exists ? u.data().n : 0) + (now ? -1 : 1))}); }
+  }
+  await db.doc("orders/" + o.id).update({status, hist: (o.hist || [{s: "Order Placed", t: o.ts}]).concat({s: status, t: Date.now()})});
+}
+function invoice(o) {
+  const c = cfg();
+  $("#inv").innerHTML = `<div class="noprint" style="max-width:760px;margin:0 auto 10px;display:flex;gap:8px"><button class="btn" data-print>🖨️ Print / Save as PDF</button><button class="btn2" data-closeinv>Close</button></div>
+  <div class="invp"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><h2 style="margin:0">${esc(c.store || "Spicezy")}</h2>${c.addr ? `<div>${esc(c.addr)}</div>` : ""}${c.phone ? `<div>Phone: ${esc(c.phone)}</div>` : ""}${c.gstin ? `<div>GSTIN: ${esc(c.gstin)}</div>` : ""}</div>
+  <div style="text-align:right"><h3 style="margin:0">INVOICE</h3><div>No: <b>${esc(o.id)}</b></div><div>Date: ${dt(o.ts)}</div><div>Status: ${esc(o.status)}</div></div></div><hr>
+  <div><b>Bill to / Ship to</b><br>${esc(o.name)}<br>${esc(o.addr)}${o.pin ? " – " + esc(o.pin) : ""}<br>Phone: ${esc(o.phone)}${o.email ? "<br>" + esc(o.email) : ""}</div>
+  <table style="margin-top:14px"><thead><tr><th>Item</th><th>Weight</th><th style="text-align:right">Qty</th><th style="text-align:right">Rate</th><th style="text-align:right">Amount</th></tr></thead><tbody>${(o.items || []).map(i => `<tr><td>${esc(i.n)}</td><td>${esc(i.w || "—")}</td><td style="text-align:right">${i.q}</td><td style="text-align:right">${inr(i.price)}</td><td style="text-align:right">${inr(i.price * i.q)}</td></tr>`).join("")}</tbody></table>
+  <div style="max-width:300px;margin:12px 0 0 auto"><div class="row"><span>Subtotal</span><span>${inr(o.sub)}</span></div>${o.disc ? `<div class="row"><span>Discount (${esc(o.coupon)})</span><span>−${inr(o.disc)}</span></div>` : ""}<div class="row"><span>Delivery fee</span><span>${o.fee ? inr(o.fee) : "Free"}</span></div><div class="row"><b>Total</b><b>${inr(o.total)}</b></div></div>
+  <p style="margin-top:14px">Payment: Cash on delivery${o.status === "Delivered" ? "" : " (payable at delivery)"}.</p><p style="font-size:12px;color:#555">Amounts are as charged when the order was placed. Thank you for shopping with ${esc(c.store || "Spicezy")}.</p></div>`;
+  $("#inv").classList.add("on");
+}
+
+/* ---------- Admin: helpers, CSV ---------- */
+const csvCell = v => { let s = String(v ?? ""); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+const toCsv = rows => rows.map(r => r.map(csvCell).join(",")).join("\r\n");
+function download(name, rows) {
+  const blob = new Blob(["\ufeff" + toCsv(rows)], {type: "text/csv;charset=utf-8"}), a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name + "-" + dayK(Date.now()) + ".csv"; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+const live2 = () => O.filter(o => o.status !== "Cancelled");
+const since = r => r === "all" ? 0 : r === "month" ? new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime() : r === "today" ? new Date().setHours(0, 0, 0, 0) : Date.now() - (+r) * 864e5;
+function groupBy(orders, keyFn) {
+  const m = {}; orders.forEach(o => { const k = keyFn(o.ts); const g = m[k] = m[k] || {k, orders: 0, units: 0, rev: 0, disc: 0, fee: 0}; g.orders++; g.rev += o.total; g.disc += o.disc || 0; g.fee += o.fee || 0; g.units += (o.items || []).reduce((a, i) => a + i.q, 0); });
+  return Object.values(m).sort((a, b) => b.k.localeCompare(a.k));
+}
+function topProducts(orders) {
+  const m = {}; orders.forEach(o => (o.items || []).forEach(i => { const k = i.id + "|" + (i.vid || "std"), g = m[k] = m[k] || {n: i.n, w: i.w || "", units: 0, rev: 0}; g.units += i.q; g.rev += i.price * i.q; }));
+  return Object.values(m).sort((a, b) => b.rev - a.rev);
+}
+const skus = () => list().flatMap(p => p.vs.map(v => ({sku: SKU(p.id, v.id), p, v, n: stockOf(p.id, v.id)})));
+const lowSkus = () => skus().filter(x => x.n <= cfg().low).sort((a, b) => a.n - b.n);
+const custs = () => { const m = {}; O.forEach(o => { const k = o.uid || o.phone, c = m[k] = m[k] || {name: o.name, email: o.email || "", phone: o.phone, orders: 0, spent: 0, first: o.ts, last: o.ts}; c.orders++; if (o.status !== "Cancelled") c.spent += o.total; c.first = Math.min(c.first, o.ts); if (o.ts >= c.last) { c.last = o.ts; c.name = o.name; c.phone = o.phone; if (o.email) c.email = o.email; } }); return Object.values(m).sort((a, b) => b.spent - a.spent); };
+
+/* ---------- Admin: tables that update without losing keyboard focus ---------- */
+function ordersTbl() {
+  const q = oq.toLowerCase(), l = O.filter(o => (!ost || o.status === ost) && (!q || [o.id, o.name, o.phone, o.email, o.addr, o.pin, o.coupon, ...(o.items || []).map(i => i.n)].join(" ").toLowerCase().includes(q)));
+  return `<div class="mu" style="margin-bottom:6px">${l.length} of ${O.length} orders</div>` + (l.length ? `<table><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>${l.map(o => `<tr>
+    <td><b>${esc(o.id)}</b><br><span class="mu">${dtm(o.ts)}</span></td><td>${esc(o.name)}<br>${esc(o.phone)}${o.email ? `<br><span class="mu">${esc(o.email)}</span>` : ""}<br><span class="mu">${esc(o.addr)}${o.pin ? " – " + esc(o.pin) : ""}</span></td>
+    <td>${(o.items || []).map(i => esc(i.n) + (i.w ? " (" + esc(i.w) + ")" : "") + " × " + i.q).join("<br>")}</td><td><b>${inr(o.total)}</b>${o.coupon ? `<br><span class="ok">🏷️ ${esc(o.coupon)} −${inr(o.disc)}</span>` : ""}</td>
+    <td><select data-ost="${esc(o.id)}">${STEPS.map(s => `<option ${s === o.status ? "selected" : ""}>${s}</option>`).join("")}</select></td><td><button class="btn2" data-inv="${esc(o.id)}">🧾</button></td></tr>`).join("")}</tbody></table>` : `<p class="mu">${O.length ? "No orders match." : "No orders yet. Place one from the store and it appears here instantly."}</p>`);
+}
+function custTbl() {
+  const q = cq.toLowerCase(), l = custs().filter(c => !q || (c.name + " " + c.email + " " + c.phone).toLowerCase().includes(q));
+  return `<div class="mu" style="margin-bottom:6px">${l.length} customer(s) who have placed orders</div>` + (l.length ? `<table><thead><tr><th>Customer</th><th>Contact</th><th>Orders</th><th>Spent</th><th>First</th><th>Last</th><th></th></tr></thead><tbody>${l.map(c => `<tr><td><b>${esc(c.name)}</b></td><td>${esc(c.phone)}${c.email ? `<br><span class="mu">${esc(c.email)}</span>` : ""}</td><td>${c.orders}</td><td>${inr(c.spent)}</td><td>${dt(c.first)}</td><td>${dt(c.last)}</td><td><button class="btn2" data-cord="${esc(c.email || c.phone)}">Orders</button></td></tr>`).join("")}</tbody></table>` : `<p class="mu">No customers yet.</p>`);
+}
+function invTbl() {
+  const q = iq.toLowerCase(), l = skus().filter(x => (!ilow || x.n <= cfg().low) && (!q || (x.p.name + " " + x.v.w + " " + x.p.cat).toLowerCase().includes(q)));
+  return `<div class="mu" style="margin-bottom:6px">${l.length} SKU(s). Low-stock level: ${cfg().low} or fewer (change in Settings).</div><table><thead><tr><th>Product</th><th>Weight</th><th>Category</th><th>Price</th><th>Stock</th><th>Update</th></tr></thead><tbody>${l.map(x => `<tr><td>${esc(x.p.name)}</td><td>${esc(x.v.w || "—")}</td><td>${esc(x.p.cat)}</td><td>${inr(x.v.price)}</td><td class="${x.n <= 0 ? "bad" : x.n <= cfg().low ? "bad" : ""}"><b>${x.n}</b> ${x.n <= 0 ? "· out" : x.n <= cfg().low ? "· low" : ""}</td>
+    <td style="white-space:nowrap"><input type="number" min="0" step="1" style="width:84px;display:inline-block" data-stkin="${esc(x.sku)}" value="${x.n}"> <button class="btn2" data-stksave="${esc(x.sku)}">Save</button> <button class="btn2" data-stkadd="${esc(x.sku)}">+10</button></td></tr>`).join("")}</tbody></table>`;
+}
+function prodTbl() {
+  const q = iq.toLowerCase(), l = list().filter(p => !q || (p.name + " " + p.cat).toLowerCase().includes(q)).sort((a, b) => a.cat.localeCompare(b.cat) || a.name.localeCompare(b.name));
+  return `<table><thead><tr><th></th><th>Name</th><th>Category</th><th>Prices</th><th>Stock</th><th></th></tr></thead><tbody>${l.map(p => `<tr><td style="width:56px"><div class="pic" style="height:44px;width:44px;font-size:26px;background:${TINT[p.cat] || "#eee"}">${p.img ? `<img src="${esc(p.img)}" alt="">` : esc(p.emoji || "🌶️")}</div></td><td>${esc(p.name)}</td><td>${esc(p.cat)}</td><td class="mu">${p.vs.map(v => (v.w ? esc(v.w) + " " : "") + inr(v.price)).join(" · ")}</td><td class="${totalStock(p) <= cfg().low ? "bad" : ""}">${totalStock(p)}</td><td style="white-space:nowrap"><button class="btn2" data-edit="${esc(p.id)}">Edit</button> <button class="btn2" data-del="${esc(p.id)}">Delete</button></td></tr>`).join("")}</tbody></table>`;
+}
+
+/* ---------- Admin: main view ---------- */
+function admin() {
+  const lv = live2(), low = lowSkus(), e = P[editId] || {};
+  const tabs = [["dash", "📊 Analytics"], ["orders", "📦 Orders"], ["prods", "🛒 Products"], ["inv", "🏷️ Inventory"], ["cust", "👥 Customers"], ["cpn", "🎟️ Coupons"], ["fb", `💬 Feedback (${FB.length})`], ["set", "⚙️ Settings"]];
+  const head = `<div class="stats"><div><span class="mu">Total sales</span><b>${inr(lv.reduce((a, o) => a + o.total, 0))}</b></div><div><span class="mu">Orders</span><b>${O.length}</b></div>
+    <div><span class="mu">Pending</span><b>${O.filter(o => !["Delivered", "Cancelled"].includes(o.status)).length}</b></div><div><span class="mu">Products</span><b>${Object.keys(P).length}</b></div><div><span class="mu">Low / out of stock</span><b class="${low.length ? "bad" : ""}">${low.length}</b></div></div>
+    ${low.length ? `<div class="alert"><b>⚠️ Low-stock alert:</b> ${low.slice(0, 6).map(x => esc(x.p.name + (x.v.w ? " " + x.v.w : "")) + " (" + x.n + ")").join(", ")}${low.length > 6 ? " and " + (low.length - 6) + " more" : ""}. <a href="#" data-tab="inv" data-low>Open inventory</a></div>` : ""}
+    <div class="tabs">${tabs.map(([k, t]) => `<button class="btn${tab === k ? "" : "2"}" data-tab="${k}">${t}</button>`).join("")}</div>`;
+  if (tab === "dash") {
+    const t0 = since(range), inR = lv.filter(o => o.ts >= t0), rev = inR.reduce((a, o) => a + o.total, 0), units = inR.reduce((a, o) => a + (o.items || []).reduce((x, i) => x + i.q, 0), 0), disc2 = inR.reduce((a, o) => a + (o.disc || 0), 0);
+    const daily = groupBy(inR, dayK), monthly = groupBy(lv, t => dayK(t).slice(0, 7)), tp = topProducts(inR).slice(0, 8), mx = Math.max(1, ...daily.map(d => d.rev)), cn = O.filter(o => o.status === "Cancelled" && o.ts >= t0).length;
+    const byStatus = STEPS.map(s => [s, O.filter(o => o.status === s && o.ts >= t0).length]);
+    return head + `<div class="bar"><b>Sales analytics</b><select id="rangeSel">${[["today", "Today"], ["7", "Last 7 days"], ["30", "Last 30 days"], ["90", "Last 90 days"], ["month", "This month"], ["all", "All time"]].map(([v, t]) => `<option value="${v}"${range === v ? " selected" : ""}>${t}</option>`).join("")}</select>
+      <button class="btn2" data-exp="daily">⬇ Daily report CSV</button><button class="btn2" data-exp="monthly">⬇ Monthly report CSV</button><button class="btn2" data-exp="orders">⬇ Orders CSV</button><button class="btn2" data-exp="top">⬇ Product sales CSV</button></div>
+    <div class="stats"><div><span class="mu">Revenue</span><b>${inr(rev)}</b></div><div><span class="mu">Orders</span><b>${inR.length}</b></div><div><span class="mu">Units sold</span><b>${units}</b></div><div><span class="mu">Avg order value</span><b>${inR.length ? inr(Math.round(rev / inR.length)) : "—"}</b></div><div><span class="mu">Discounts given</span><b>${inr(disc2)}</b></div><div><span class="mu">Cancelled</span><b>${cn}</b></div></div>
+    ${!O.length ? `<div class="panel mu">No orders yet, so there is nothing to report. Figures appear here from real orders only.</div>` : `
+    <div class="panel tw"><h3 style="margin-top:0">Daily sales</h3>${daily.length ? `<table><thead><tr><th>Date</th><th>Orders</th><th>Units</th><th>Revenue</th><th style="width:30%"></th></tr></thead><tbody>${daily.slice(0, 31).map(d => `<tr><td>${esc(d.k)}</td><td>${d.orders}</td><td>${d.units}</td><td>${inr(d.rev)}</td><td><div class="bar2" style="width:${Math.round(d.rev / mx * 100)}%"></div></td></tr>`).join("")}</tbody></table>` : `<p class="mu">No sales in this period.</p>`}</div>
+    <div class="panel tw"><h3 style="margin-top:0">Monthly sales</h3><table><thead><tr><th>Month</th><th>Orders</th><th>Units</th><th>Revenue</th><th>Discounts</th></tr></thead><tbody>${monthly.map(d => `<tr><td>${esc(d.k)}</td><td>${d.orders}</td><td>${d.units}</td><td>${inr(d.rev)}</td><td>${inr(d.disc)}</td></tr>`).join("")}</tbody></table></div>
+    <div class="panel tw"><h3 style="margin-top:0">Top products (by revenue)</h3>${tp.length ? `<table><thead><tr><th>Product</th><th>Units</th><th>Revenue</th></tr></thead><tbody>${tp.map(x => `<tr><td>${esc(x.n)}${x.w ? " (" + esc(x.w) + ")" : ""}</td><td>${x.units}</td><td>${inr(x.rev)}</td></tr>`).join("")}</tbody></table>` : `<p class="mu">No sales in this period.</p>`}</div>
+    <div class="panel"><h3 style="margin-top:0">Orders by status</h3>${byStatus.map(([s, n]) => `<span class="pill" style="margin-right:6px">${esc(s)}: ${n}</span>`).join("")}</div>`}`;
+  }
+  if (tab === "orders") return head + `<div class="bar"><input id="oqIn" placeholder="Search order ID, name, phone, email, address, PIN, product" value="${esc(oq)}" style="min-width:260px;flex:1"><select id="ostSel"><option value="">All statuses</option>${STEPS.map(s => `<option${ost === s ? " selected" : ""}>${s}</option>`).join("")}</select><button class="btn2" data-exp="orders">⬇ CSV</button></div><div class="panel tw" id="tbl">${ordersTbl()}</div>`;
+  if (tab === "cust") return head + `<div class="bar"><input id="cqIn" placeholder="Search customers" value="${esc(cq)}" style="min-width:240px;flex:1"><button class="btn2" data-exp="cust">⬇ CSV</button></div><div class="panel tw" id="tbl">${custTbl()}</div>`;
+  if (tab === "inv") return head + `<div class="bar"><input id="iqIn" placeholder="Search product or category" value="${esc(iq)}" style="min-width:240px;flex:1"><label><input type="checkbox" id="ilowChk"${ilow ? " checked" : ""}>Low / out of stock only</label><button class="btn2" data-exp="inv">⬇ Inventory CSV</button></div><div class="panel tw" id="tbl">${invTbl()}</div>`;
+  if (tab === "fb") return head + (FB.length ? FB.map(f => `<div class="panel"><div class="row"><b>${esc(f.type)}${f.rating ? " · " + stars(f.rating) : ""}</b><span class="mu">${esc(f.name)} · ${new Date(f.ts).toLocaleString("en-IN")}</span></div>${f.orderId ? `<div class="mu">Order ${esc(f.orderId)}</div>` : ""}<p>${esc(f.msg)}</p><select data-fbs="${esc(f.id)}">${["New", "Reviewed", "Resolved"].map(x => `<option${(f.status || "New") === x ? " selected" : ""}>${x}</option>`).join("")}</select> <button class="btn2" data-fbdel="${esc(f.id)}">Delete</button></div>`).join("") : `<p class="mu">No feedback yet.</p>`);
+  if (tab === "cpn") { const cs = Object.values(C).sort((a, b) => a.code.localeCompare(b.code)), st = c => !c.active ? "Paused" : c.exp && Date.now() > c.exp ? "Expired" : c.start && Date.now() < c.start ? "Scheduled" : "Live";
+    return head + `<div class="panel"><h3 style="margin-top:0">Create or update a coupon</h3><div class="fg"><input id="kc" placeholder="CODE e.g. WELCOME10" style="text-transform:uppercase"><select id="kt"><option value="percent">Percentage (%)</option><option value="flat">Flat amount (₹)</option></select><input id="kv" type="number" min="1" placeholder="Discount value"><input id="km" type="number" min="0" placeholder="Min order ₹ (optional)"><label class="mu">Valid from<input id="kf" type="date"></label><label class="mu">Valid until<input id="ku" type="date"></label><input id="kl" type="number" min="0" placeholder="Usage limit (0 = unlimited)"><label class="mu"><input id="ks" type="checkbox" style="width:auto" checked> Show on storefront</label></div><div style="margin-top:8px"><button class="btn" data-savec>Save coupon</button></div></div>
+    <div class="panel tw">${cs.length ? `<table><thead><tr><th>Code</th><th>Offer</th><th>Validity</th><th>Used</th><th>Status</th><th></th></tr></thead><tbody>${cs.map(c => `<tr><td><b>${esc(c.code)}</b></td><td>${esc(cdesc(c))}</td><td>${dt(c.start)} → ${c.exp ? dt(c.exp) : "No expiry"}</td><td>${CU[c.code] || 0}${c.limit ? " / " + c.limit : ""}</td><td class="${st(c) === "Live" ? "ok" : "bad"}">${st(c)}</td><td style="white-space:nowrap"><button class="btn2" data-ctog="${esc(c.code)}">${c.active ? "Pause" : "Activate"}</button> <button class="btn2" data-cdel="${esc(c.code)}">Delete</button></td></tr>`).join("")}</tbody></table>` : `<p class="mu">No coupons yet. Create one above.</p>`}</div>`; }
+  if (tab === "set") { const c = cfg(); return head + `<div class="panel"><h3 style="margin-top:0">Store &amp; invoice details</h3><div class="fg"><input id="s1" placeholder="Store name" value="${esc(c.store)}"><input id="s2" placeholder="Phone" value="${esc(c.phone)}"><input id="s3" placeholder="GSTIN (optional)" value="${esc(c.gstin)}"><textarea id="s4" rows="2" class="wide" placeholder="Store address (printed on invoices)">${esc(c.addr)}</textarea></div>
+    <h3>Delivery &amp; stock rules</h3><div class="fg"><label class="mu">Delivery fee ₹<input id="s5" type="number" min="0" value="${c.fee}"></label><label class="mu">Free delivery from ₹<input id="s6" type="number" min="0" value="${c.free}"></label><label class="mu">Default delivery days<input id="s7" type="number" min="0" max="60" value="${c.days}"></label><label class="mu">Low-stock level (units)<input id="s8" type="number" min="0" value="${c.low}"></label></div>
+    <label class="mu">Serviceable PIN code areas: one per line as <code>prefix = days</code> (e.g. <code>626 = 2</code>). Leave empty to deliver to every valid 6-digit PIN.</label><textarea id="s9" rows="4" placeholder="626 = 2&#10;625 = 3">${esc((c.areas || []).map(a => a.p + " = " + a.d).join("\n"))}</textarea><button class="btn3" data-saveset style="width:auto;margin-top:8px">Save settings</button></div>
+    <div class="panel"><h3 style="margin-top:0">Catalogue</h3><p class="mu">Adds the starter products (whole spices, masalas, herbs &amp; botanicals, combo and gift packs) that are not in your store yet. Existing products are never changed. Starter prices and stock are placeholders: review them in Products and Inventory.</p><button class="btn2" data-seed>Add starter catalogue (${SZ_CATALOG.filter(p => !P[p.id]).length} missing)</button></div>`; }
+  return head + `<div class="panel"><h3 style="margin-top:0">${editId ? "Edit" : "Add"} product</h3><div class="fg"><input id="pn" placeholder="Product name" maxlength="150" value="${esc(e.name)}"><select id="pc">${CATS.map(c => `<option ${c === e.cat ? "selected" : ""}>${c}</option>`).join("")}</select>
+    <input id="pe" placeholder="Emoji (e.g. 🌶️)" maxlength="8" value="${esc(e.emoji)}"><input id="pi" type="file" accept="image/*" multiple title="Up to 3 photos; the first is the main photo">
+    <textarea id="pv" rows="4" class="wide" placeholder="Weights, one per line: label, price, stock&#10;100g, 55, 40&#10;250g, 125, 30">${esc(editId ? (e.vs || variantsOf(e)).map(v => (v.w || "Standard") + ", " + v.price + ", " + stockOf(editId, v.id)).join("\n") : "")}</textarea>
+    <input id="ptags" class="wide" placeholder="Search tags, comma separated (optional)" value="${esc((e.tags || []).join(", "))}"><textarea id="pd" rows="2" class="wide" placeholder="Short description">${esc(e.desc)}</textarea><textarea id="pig" rows="2" class="wide" placeholder="Details / ingredients / what is included (optional)">${esc(e.ing)}</textarea></div>
+    <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-save>${editId ? "Update" : "Add"} product</button>${editId ? `<button class="btn2" data-cancel>Cancel</button>` : ""}</div></div>
+    <div class="bar"><input id="iqIn" placeholder="Search products" value="${esc(iq)}" style="min-width:240px;flex:1"><button class="btn2" data-exp="prods">⬇ Products CSV</button></div><div class="panel tw" id="tbl">${prodTbl()}</div>`;
+}
+function exportCsv(what) {
+  if (what === "orders") return download("orders", [["Order", "Date", "Status", "Customer", "Phone", "Email", "Address", "PIN", "Items", "Subtotal", "Discount", "Coupon", "Delivery fee", "Total"], ...O.map(o => [o.id, dtm(o.ts), o.status, o.name, o.phone, o.email || "", o.addr, o.pin || "", (o.items || []).map(i => i.n + (i.w ? " (" + i.w + ")" : "") + " x" + i.q).join("; "), o.sub, o.disc || 0, o.coupon || "", o.fee || 0, o.total])]);
+  if (what === "daily" || what === "monthly") { const g = what === "daily" ? groupBy(live2().filter(o => o.ts >= since(range)), dayK) : groupBy(live2(), t => dayK(t).slice(0, 7)); return download(what + "-sales", [[what === "daily" ? "Date" : "Month", "Orders", "Units", "Revenue", "Discounts", "Delivery fees"], ...g.map(d => [d.k, d.orders, d.units, d.rev, d.disc, d.fee])]); }
+  if (what === "top") return download("product-sales", [["Product", "Weight", "Units", "Revenue"], ...topProducts(live2().filter(o => o.ts >= since(range))).map(x => [x.n, x.w, x.units, x.rev])]);
+  if (what === "cust") return download("customers", [["Name", "Email", "Phone", "Orders", "Spent", "First order", "Last order"], ...custs().map(c => [c.name, c.email, c.phone, c.orders, c.spent, dtm(c.first), dtm(c.last)])]);
+  if (what === "inv") return download("inventory", [["Product", "Weight", "Category", "SKU", "Price", "Stock", "Low stock"], ...skus().map(x => [x.p.name, x.v.w, x.p.cat, x.sku, x.v.price, x.n, x.n <= cfg().low ? "yes" : "no"])]);
+  if (what === "prods") return download("products", [["ID", "Name", "Category", "Weight", "Price", "Stock", "Description"], ...skus().map(x => [x.p.id, x.p.name, x.p.cat, x.v.w, x.v.price, x.n, x.p.desc])]);
+}
+
+/* ---------- Admin: save product, stock, settings, starter catalogue ---------- */
+const shrink = f => new Promise(res => { const r = new FileReader(); r.onload = () => { const im = new Image(); im.onload = () => {
+  const k = Math.min(1, 640 / Math.max(im.width, im.height)), c = document.createElement("canvas"); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+  c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); res(c.toDataURL("image/jpeg", .78)); }; im.src = r.result; }; r.readAsDataURL(f); });
+function parseVariants(txt) {
+  const vs = [], seen = new Set();
+  for (const line of txt.split("\n").map(x => x.trim()).filter(Boolean)) {
+    const [w, pr, st] = line.split(",").map(x => x.trim()), price = Math.round(+pr), n = Math.floor(+st), id = slug(w || "");
+    if (!w || !id) return "Each line needs a weight label, e.g. 100g, 55, 40";
+    if (!(price > 0)) return "Enter a price greater than 0 for \"" + w + "\".";
+    if (!(n >= 0)) return "Enter a stock number (0 or more) for \"" + w + "\".";
+    if (seen.has(id)) return "Weight \"" + w + "\" is repeated."; seen.add(id); vs.push({id, w: id === "std" ? "" : w, price, n});
+  }
+  return vs.length ? vs : "Add at least one weight, price and stock line.";
+}
+async function saveProd() {
+  const name = $("#pn").value.trim(), vs = parseVariants($("#pv").value); if (!name) return toast("Enter a product name."); if (typeof vs === "string") return toast(vs);
+  const id = editId || "p" + Date.now().toString(36), old = P[id] || {}, tags = $("#ptags").value.split(",").map(x => x.trim()).filter(Boolean).slice(0, 10);
+  const doc = {name, cat: $("#pc").value, price: vs[0].price, emoji: $("#pe").value.trim() || old.emoji || "🌶️", desc: $("#pd").value.trim(), ing: $("#pig").value.trim(), tags, img: pend ? pend[0] : (old.img || ""), gallery: pend ? pend.slice(1) : (old.gallery || []), ts: old.ts || Date.now()};
+  if (!(vs.length === 1 && vs[0].id === "std")) doc.variants = vs.map(v => ({id: v.id, w: v.w, price: v.price})); if (old.rating) doc.rating = old.rating;
+  try {
+    await db.doc("products/" + id).set(doc);
+    for (const v of vs) await db.doc("stock/" + SKU(id, v.id)).set({n: v.n});
+    for (const v of variantsOf(old)) if (old.name && !vs.some(x => x.id === v.id)) { try { await db.doc("stock/" + SKU(id, v.id)).delete(); } catch (e) {} }
+    toast(editId ? "Product updated" : "Product added"); editId = null; pend = null; paint();
+  } catch (e) { toast("Could not save: " + (e.message || e.code)); }
+}
+async function delProduct(id) {
+  try { const p = P[id]; await db.doc("products/" + id).delete(); for (const v of variantsOf(p || {price: 0})) { try { await db.doc("stock/" + SKU(id, v.id)).delete(); } catch (e) {} } Object.keys(cart).forEach(k => { if (fromKey(k)[0] === id) delete cart[k]; }); saveCart(); toast("Deleted"); }
+  catch (e) { toast("Could not delete"); }
+}
+async function saveStock(sku, n) { if (!(n >= 0) || !Number.isInteger(n)) return toast("Enter a whole number, 0 or more."); try { await db.doc("stock/" + sku).set({n}); toast("Stock updated"); } catch (e) { toast("Could not update stock: " + (e.message || e.code)); } }
+async function saveSettings() {
+  const areas = [], lines = $("#s9").value.split("\n").map(x => x.trim()).filter(Boolean);
+  for (const l of lines) { const m = l.match(/^(\d{1,6})\s*=\s*(\d{1,2})$/); if (!m) return toast("Area lines must look like: 626 = 2"); areas.push({p: m[1], d: +m[2]}); }
+  const d = {store: $("#s1").value.trim(), phone: $("#s2").value.trim(), gstin: $("#s3").value.trim(), addr: $("#s4").value.trim(), fee: Math.round(+$("#s5").value), free: Math.round(+$("#s6").value), days: Math.round(+$("#s7").value), low: Math.round(+$("#s8").value), areas};
+  if ([d.fee, d.free, d.days, d.low].some(x => !(x >= 0))) return toast("Fee, free-delivery amount, days and low-stock level must be 0 or more.");
+  try { await db.doc("settings/main").set(d); toast("Settings saved"); } catch (e) { toast("Could not save: " + (e.message || e.code)); }
+}
+async function seedCatalog() {
+  const miss = SZ_CATALOG.filter(p => !P[p.id]); if (!miss.length) return toast("Every starter product is already in your store.");
+  if (!confirm("Add " + miss.length + " starter products? Prices and stock are placeholders you should review.")) return;
+  try {
+    const base = Date.now() - 1e6;
+    for (const p of miss) {
+      const d = {name: p.name, cat: p.cat, price: p.price, emoji: p.emoji, desc: p.desc, ing: p.ing || "", tags: p.tags || [], img: "", gallery: [], ts: base + p.ord}; if (p.variants) d.variants = p.variants; if (p.rating) d.rating = p.rating;
+      await db.doc("products/" + p.id).set(d); for (const [vid, n] of Object.entries(p.n)) await db.doc("stock/" + SKU(p.id, vid)).set({n});
+    }
+    toast("Added " + miss.length + " products");
+  } catch (e) { toast("Could not add products: " + (e.message || e.code)); }
+}
+
+/* ---------- Cart drawer and checkout ---------- */
+function paintDrawer() {
+  const it = cartItems(), s = sub(), fee = feeOf(s), c = cfg();
+  keepForm(); if (appC && s < (appC.min || 0)) { appC = null; cok = false; cmsg = "Coupon removed: cart is below its minimum order."; }
+  const dd = appC ? disc(s, appC) : 0, dz = form.z ? dlv(form.z) : null;
+  $("#drawer").classList.toggle("on", open); $("#shade").classList.toggle("on", open); setCount();
+  let body = "", foot = "";
+  if (doneId) { foot = `<button class="btn3" data-go="orders">Track my order</button>`; body = `<h3>🎉 Order placed!</h3><p>Order ID: <b>${esc(doneId)}</b><br>${doneEta ? "Estimated delivery: <b>" + dt(doneEta) + "</b><br>" : ""}Pay in cash on delivery. The shop can now see your order.</p>`; }
+  else if (!it.length) body = `<p class="mu">Your cart is empty.</p>`;
+  else if (step === "cart") {
+    body = it.map(i => { const n = stockOf(i.id, i.vid); return `<div class="ci">${pic(i.p)}<div><b>${esc(i.p.name)}</b>${i.v.w ? ` <span class="mu">${esc(i.v.w)}</span>` : ""}<div class="mu">${inr(i.v.price)} each</div><span class="qty"><button data-q="${esc(i.key)}" data-d="-1" aria-label="Less">−</button>${i.q}<button data-q="${esc(i.key)}" data-d="1" aria-label="More">+</button></span> <button class="btn2" data-rm="${esc(i.key)}">Remove</button>${n < 6 ? `<div class="bad mu">Only ${n} in stock</div>` : ""}</div><b>${inr(i.v.price * i.q)}</b></div>`; }).join("")
+      + (s < c.free ? `<p class="mu">Add ${inr(c.free - s)} more for free delivery.</p>` : `<p class="ok">🎉 You get free delivery.</p>`);
+    foot = `<div class="row"><span>Subtotal</span><b>${inr(s)}</b></div><button class="btn3" data-go="checkout">Proceed to checkout</button>`;
+  } else {
+    body = `<h3 style="margin-top:0">Delivery details</h3><input id="cn" placeholder="Full name" autocomplete="name" value="${esc(form.n)}"><input id="cp" placeholder="Phone (10 digits)" inputmode="numeric" maxlength="10" autocomplete="tel" value="${esc(form.p)}">
+      <input id="cz" placeholder="PIN code (6 digits)" inputmode="numeric" maxlength="6" autocomplete="postal-code" value="${esc(form.z)}">${dz ? `<div class="${dz.ok ? "ok" : "bad"}" style="font-size:13px">${esc(dz.msg)}</div>` : ""}
+      <textarea id="ca" rows="3" placeholder="Delivery address" autocomplete="street-address">${esc(form.a)}</textarea>
+      ${appC ? `<div class="row ok"><span>🏷️ <b>${esc(appC.code)}</b> applied</span><button class="btn2" data-rmc>Remove</button></div>` : `<div style="display:flex;gap:6px"><input id="cc2" placeholder="Coupon code" style="text-transform:uppercase" value="${esc(form.c)}"><button class="btn2" data-applyc>Apply</button></div>`}${cmsg ? `<div class="${cok ? "ok" : "bad"}" style="font-size:13px">${esc(cmsg)}</div>` : ""}
+      <div class="row"><span>Subtotal</span><span>${inr(s)}</span></div>${dd ? `<div class="row ok"><span>Discount</span><span>−${inr(dd)}</span></div>` : ""}<div class="row"><span>Delivery fee</span><span>${fee ? inr(fee) : "Free"}</span></div><div class="row"><b>Total (Cash on Delivery)</b><b>${inr(s - dd + fee)}</b></div>`;
+    foot = `<button class="btn3" data-place>Place order</button> <button class="btn2" style="width:100%;margin-top:6px" data-go="cart">Back to cart</button>`;
+  }
+  $("#drawer").innerHTML = `<div class="dh"><b>Your Cart</b><span><button class="btn2" data-go="orders" style="margin-right:6px">📦 Orders</button><button class="btn2" id="closeCart" aria-label="Close">✕</button></span></div><div class="db">${body}</div>${foot ? `<div class="df">${foot}</div>` : ""}`;
+}
+async function place() {
+  keepForm(); const name = form.n.trim(), phone = form.p.trim(), pin = form.z.trim(), addr = form.a.trim(), it = cartItems();
+  if (!it.length) return toast("Your cart is empty.");
+  if (!name || !/^\d{10}$/.test(phone) || addr.length < 5) return toast("Enter your name, a 10-digit phone and the address.");
+  const dz = dlv(pin); if (!dz.ok) return toast(dz.msg);
+  const btn = $("[data-place]"); if (btn) btn.disabled = true;
+  try {
+    let id, eta = Date.now() + dz.days * 864e5;
+    if (srv) { const r = await api("POST", "/api/checkout", {items: it.map(i => ({id: i.id, vid: i.vid, q: i.q})), name, phone, addr, pin, coupon: appC ? appC.code : ""}); id = r.id; eta = r.eta || eta; }
+    else {
+      for (const i of it) { const g = await db.doc("stock/" + SKU(i.id, i.vid)).get(); i.n = g.exists ? g.data().n : 0; if (i.n < i.q) throw new Error(i.n ? `Only ${i.n} left of ${i.p.name}${vlabel(i.p, i.v)}` : `${i.p.name}${vlabel(i.p, i.v)} is out of stock`); }
+      let cp = null, d = 0;
+      if (appC) { const r = await check(appC.code, sub()); if (!r.ok) { appC = null; cok = false; cmsg = r.msg; paintDrawer(); throw new Error(r.msg); } cp = r.c; d = disc(sub(), cp); }
+      for (const i of it) await db.doc("stock/" + SKU(i.id, i.vid)).set({n: i.n - i.q});
+      const sb = sub(), f = feeOf(sb), now = Date.now(); id = "SZ" + String(now).slice(-7);
+      await db.doc("orders/" + id).set({name, phone, addr, pin, email: me.email || "", items: it.map(i => ({id: i.id, vid: i.vid, n: i.p.name, w: i.v.w, q: i.q, price: i.v.price})), sub: sb, fee: f, disc: d, coupon: cp ? cp.code : "", total: sb - d + f, status: "Order Placed", uid, ts: now, eta, pay: "COD", hist: [{s: "Order Placed", t: now}]});
+      if (cp) { const u = await db.doc("couponUse/" + cp.code).get(); await db.doc("couponUse/" + cp.code).set({n: (u.exists ? u.data().n : 0) + 1}); }
+      const per = {}; it.forEach(i => { per[i.id] = (per[i.id] || 0) + i.q; });
+      for (const [pid2, n] of Object.entries(per)) { try { const g = await db.doc("sold/" + pid2).get(); await db.doc("sold/" + pid2).set({n: (g.exists ? g.data().n : 0) + n}); } catch (e) {} }
+    }
+    appC = null; cmsg = ""; resetForm(); cart = {}; saveCart(); doneId = id; doneEta = eta; step = "cart"; paintDrawer(); if (window.szKick) szKick();
+  } catch (e) { toast(e.message || "Could not place the order. Please try again."); if (btn) btn.disabled = false; }
+}
+
+/* ---------- Painting and routing ---------- */
+const typing = () => /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && $("#main").contains(document.activeElement);
+function paint() {
+  if (out) return;
+  if (typing()) { dirty = true; return; }
+  dirty = false; paintSub();
+  const same = lastV === view, keepV = same && ["feedback", "profile", "pd", "settings"].includes(view) ? [...$("#main").querySelectorAll("input[id],textarea[id],select[id]")].map(el => [el.id, el.value]) : []; lastV = view;
+  $("#main").innerHTML = view === "admin" && isAdmin ? admin() : view === "pd" ? detail() : view === "wish" ? wishV() : view === "orders" ? ordersV() : view === "profile" ? profileV() : view === "settings" ? settingsV() : view === "feedback" ? feedbackV() : shop();
+  keepV.forEach(([id, v]) => { const el = $("#" + id); if (el && el.type !== "file") el.value = v; });
+  setCount(); $("#adminBtn").hidden = !isAdmin; $("#adminBtn").textContent = view === "admin" ? "🏪 Store" : "⚙️ Admin";
+}
+const repaint = () => { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); dirty = false; paint(); };
+function route() {
+  const parts = location.hash.replace(/^#\/?/, "").split("/"), a = parts[0], b = parts[1];
+  if (a === "p" && b) { view = "pd"; pid = decodeURIComponent(b); gi = 0; qd = 1; pinMsg = null; REV = []; if (P[pid]) trackView(pid); loadReviews(pid); }
+  else if (["wish", "orders", "feedback", "profile", "settings", "admin"].includes(a)) view = a === "admin" && !isAdmin ? "shop" : a; else view = "shop";
+  dirty = false; if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); paint(); scrollTo(0, 0);
+}
+addEventListener("hashchange", route);
+
+/* ---------- Events ---------- */
+document.addEventListener("click", async e => {
+  const t = e.target.closest("button,a,.shade,#logo") || e.target, d = t.dataset || {}, p0 = view === "pd" ? list().find(x => x.id === pid) : null;
+  if (t.id === "menuBtn") menuOpen(true);
+  if (t.id === "closeMenu" || t.id === "mshade") menuOpen(false);
+  if (t.id === "logo") { cat = "All"; term = ""; $("#q").value = ""; nav("#/"); }
+  if (t.id === "wishBtn") nav("#/wish");
+  if (d.m) menu(d.m);
+  if (d.mc) { cat = d.mc; menuOpen(false); nav("#/"); }
+  if (d.sendfb !== undefined) sendFeedback();
+  if (d.fbdel && confirm("Delete this feedback?")) { try { await db.doc("feedback/" + d.fbdel).delete(); } catch (er) { toast("Could not delete"); } }
+  if (d.logout !== undefined) logout();
+  if (d.saveprof !== undefined) { prof = {n: $("#pn").value.trim(), p: $("#pp").value.trim(), z: $("#pz").value.trim(), a: $("#pa").value.trim()}; try { localStorage.setItem(pkey(), JSON.stringify(prof)); } catch (er) {} resetForm(); toast("Details saved"); }
+  if (d.clrcart !== undefined) { cart = {}; saveCart(); paint(); toast("Cart emptied"); }
+  if (d.clrprof !== undefined) { prof = {n: "", p: "", a: "", z: ""}; try { localStorage.removeItem(pkey()); } catch (er) {} resetForm(); toast("Saved details removed"); }
+  if (d.add) addToCart(d.add, d.vid, 1);
+  if (d.addd && p0) addToCart(p0.id, selV(p0).id, qd);
+  if (d.buy && p0) { if (addToCart(p0.id, selV(p0).id, qd, true)) { open = true; step = "checkout"; doneId = ""; paintDrawer(); } }
+  if (d.vopt) { sel[pid] = d.vopt; qd = 1; repaint(); }
+  if (d.dq && p0) { const v = selV(p0); qd = Math.max(1, Math.min(Math.max(1, stockOf(pid, v.id)), qd + +d.dq)); repaint(); }
+  if (d.gi !== undefined) { gi = +d.gi; repaint(); }
+  if (d.wish) { if (!uid) return toast("Log in to use the wishlist."); toggleWish(d.wish); }
+  if (d.dchk !== undefined) { const z = ($("#dz").value || "").trim(); pinMsg = {...dlv(z), z}; if (pinMsg.ok) { prof.z = z; try { localStorage.setItem(pkey(), JSON.stringify(prof)); } catch (er) {} resetForm(); } repaint(); }
+  if (d.sendrv) sendReview(d.sendrv);
+  if (d.rvdel && confirm("Delete this review?")) delReview(d.rvdel);
+  if (d.reorder) { const o = mine().find(x => x.id === d.reorder); if (o) reorder(o); }
+  if (d.inv) { const o = (isAdmin ? O : MY).find(x => x.id === d.inv); if (o) invoice(o); }
+  if (d.print !== undefined) window.print();
+  if (d.closeinv !== undefined) $("#inv").classList.remove("on");
+  if (d.ocancel && confirm("Cancel order " + d.ocancel + "?")) { const o = mine().find(x => x.id === d.ocancel); if (o) { try { await setStatus(o, "Cancelled"); toast("Order cancelled"); } catch (er) { toast(er.message || "Could not cancel"); } } }
+  if (d.q) { const n = (cart[d.q] || 0) + +d.d, [id, vid] = fromKey(d.q); if (n > stockOf(id, vid)) return toast("Only " + stockOf(id, vid) + " in stock."); n < 1 ? delete cart[d.q] : (cart[d.q] = n); saveCart(); paintDrawer(); }
+  if (d.rm) { delete cart[d.rm]; saveCart(); paintDrawer(); }
+  if (d.go) { if (d.go === "orders") { open = false; doneId = ""; paintDrawer(); nav("#/orders"); } else { keepForm(); step = d.go; doneId = ""; paintDrawer(); } }
+  if (d.place !== undefined) place();
+  if (d.applyc !== undefined) applyCoupon();
+  if (d.rmc !== undefined) { keepForm(); appC = null; cmsg = ""; form.c = ""; paintDrawer(); }
+  if (d.savec !== undefined) saveCoupon();
+  if (d.ctog) { try { await db.doc("coupons/" + d.ctog).update({active: !C[d.ctog].active}); } catch (er) { toast("Could not update"); } }
+  if (d.cdel && confirm("Delete coupon " + d.cdel + "?")) { try { await db.doc("coupons/" + d.cdel).delete(); toast("Coupon deleted"); } catch (er) { toast("Could not delete"); } }
+  if (t.closest("#cartBtn, #fab")) { open = true; step = "cart"; doneId = ""; paintDrawer(); }
+  if (t.id === "closeCart" || t.id === "shade") { open = false; paintDrawer(); }
+  if (d.cat) { e.preventDefault(); cat = d.cat; nav("#/"); }
+  if (d.clrf !== undefined) { term = ""; $("#q").value = ""; maxP = ""; inStock = false; topRated = false; cat = "All"; repaint(); }
+  if (t.id === "adminBtn") nav(view === "admin" ? "#/" : "#/admin");
+  if (d.tab) { e.preventDefault(); tab = d.tab; if (d.low !== undefined) ilow = true; paint(); }
+  if (d.edit) { editId = d.edit; pend = null; paint(); scrollTo(0, 0); }
+  if (d.cancel !== undefined) { editId = null; pend = null; paint(); }
+  if (d.save !== undefined) saveProd();
+  if (d.del && confirm("Delete this product from the store?")) delProduct(d.del);
+  if (d.exp) exportCsv(d.exp);
+  if (d.cord) { oq = d.cord; tab = "orders"; paint(); }
+  if (d.stksave) saveStock(d.stksave, +$('[data-stkin="' + d.stksave + '"]').value);
+  if (d.stkadd) saveStock(d.stkadd, (S[d.stkadd] || 0) + 10);
+  if (d.saveset !== undefined) saveSettings();
+  if (d.seed !== undefined) seedCatalog();
+});
+document.addEventListener("change", async e => {
+  const t = e.target, i = t.id;
+  if (i === "th") { try { localStorage.setItem("szTheme", t.value); } catch (er) {} applyTheme(); }
+  if (t.dataset.fbs) { try { await db.doc("feedback/" + t.dataset.fbs).update({status: t.value}); } catch (er) { toast("Could not update"); } }
+  if (t.dataset.ost) { const o = O.find(x => x.id === t.dataset.ost); if (o) { try { await setStatus(o, t.value); toast("Order updated"); } catch (er) { toast(er.message || "Could not update"); } } }
+  if (t.dataset.vsel) { sel[t.dataset.vsel] = t.value; repaint(); }
+  if (i === "pi" && t.files.length) pend = await Promise.all([...t.files].slice(0, 3).map(shrink));
+  if (i === "sortSel") { sortBy = t.value; repaint(); } if (i === "priceSel") { maxP = t.value; repaint(); } if (i === "stockChk") { inStock = t.checked; repaint(); } if (i === "rateChk") { topRated = t.checked; repaint(); }
+  if (i === "rangeSel") { range = t.value; repaint(); } if (i === "ostSel") { ost = t.value; $("#tbl").innerHTML = ordersTbl(); } if (i === "ilowChk") { ilow = t.checked; $("#tbl").innerHTML = invTbl(); }
+  if (i === "cz" || i === "cn" || i === "cp") { keepForm(); if (i === "cz") paintDrawer(); }
+});
+document.addEventListener("input", e => {
+  const i = e.target.id, v = e.target.value;
+  if (i === "q") { term = v; if (view !== "shop") { location.hash = "#/"; } else paint(); }
+  if (i === "mq") { mq = v; $("#olist").innerHTML = myList(); }
+  if (i === "oqIn") { oq = v; $("#tbl").innerHTML = ordersTbl(); } if (i === "cqIn") { cq = v; $("#tbl").innerHTML = custTbl(); }
+  if (i === "iqIn") { iq = v; $("#tbl").innerHTML = tab === "inv" ? invTbl() : prodTbl(); }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") { open = false; paintDrawer(); menuOpen(false); $("#inv").classList.remove("on"); } });
+document.addEventListener("focusout", () => { if (dirty) setTimeout(() => { if (!typing()) paint(); }, 400); });
+
+/* ---------- Database layers: server (REST), plain browser file ---------- */
+const api = async (m, u, b) => { const r = await fetch(u, {method: m, credentials: "same-origin", headers: {"Content-Type": "application/json", "X-Requested-With": "spicezy"}, body: b === undefined ? undefined : JSON.stringify(b)}); const j = await r.json().catch(() => ({})); if (!r.ok) { const e = new Error(j.error || "Request failed (" + r.status + ")"); e.status = r.status; throw e; } return j; };
+function apiDb() {
+  const pulls = []; window.szKick = () => pulls.forEach(f => f());
+  const w = (m, u, d) => api(m, u, d).then(r => { setTimeout(window.szKick, 0); return r; });
+  const qs = q => (q.flt ? "&f=" + encodeURIComponent(q.flt[0]) + "&v=" + encodeURIComponent(q.flt[1]) : "") + (q.ord ? "&sort=" + q.ord[0] + "&dir=" + q.ord[1] : "");
+  const mk = c => ({ flt: null, ord: null, orderBy(f, d) { this.ord = [f, d]; return this; }, where(f, o, v) { this.flt = [f, v]; return this; },
+    async get() { const rows = await api("GET", "/api/c/" + c + "?x=1" + qs(this)); return {docs: rows.map(r => ({id: r.id, data: () => r.data}))}; },
+    onSnapshot(fn, errfn) { let last = "", lastErr = ""; const pull = async () => { try { const rows = await api("GET", "/api/c/" + c + "?x=1" + qs(this)), sig = JSON.stringify(rows); lastErr = ""; if (sig !== last) { last = sig; fn({docs: rows.map(r => ({id: r.id, data: () => r.data}))}); } } catch (e) { if (e.status === 401) return location.reload(); if (errfn && e.message !== lastErr) { lastErr = e.message; errfn(e); } } }; pulls.push(pull); pull(); setInterval(() => { if (!document.hidden) pull(); }, 3000); } });
+  return { collection: mk, doc: path => { const [c, id] = path.split("/"), u = "/api/c/" + c + "/" + encodeURIComponent(id); return { get: async () => { try { const d = await api("GET", u); return {exists: true, data: () => d}; } catch (e) { if (e.status === 404) return {exists: false, data: () => null}; throw e; } }, set: d => w("PUT", u, d), update: d => w("PATCH", u, d), delete: () => w("DELETE", u) }; } };
+}
+function localDb() {
+  let st = null; try { st = JSON.parse(localStorage.getItem("szdb")); } catch (e) {}
+  if (!st || !st.products) {
+    st = {products: {}, stock: {}, orders: {}}; const base = Date.now() - 1e6;
+    SZ_CATALOG.forEach(p => { const d = {name: p.name, cat: p.cat, price: p.price, emoji: p.emoji, desc: p.desc, ing: p.ing || "", tags: p.tags || [], img: "", gallery: [], ts: base + p.ord}; if (p.variants) d.variants = p.variants; if (p.rating) d.rating = p.rating; st.products[p.id] = d; Object.entries(p.n).forEach(([vid, n]) => { st.stock[SKU(p.id, vid)] = {n}; }); });
+  }
+  ["feedback", "coupons", "couponUse", "reviews", "ratings", "sold", "wish", "settings"].forEach(c => { st[c] = st[c] || {}; });
+  if (!st.cseed) { st.cseed = 1; st.coupons.WELCOME10 = {code: "WELCOME10", type: "percent", value: 10, min: 0, start: 0, exp: 0, limit: 0, active: true, show: true}; st.coupons.FLAT50 = {code: "FLAT50", type: "flat", value: 50, min: 299, start: 0, exp: 0, limit: 0, active: true, show: true}; }
+  const subs = [], save = () => { try { localStorage.setItem("szdb", JSON.stringify(st)); } catch (e) { toast("Browser storage is full. Remove large photos."); } subs.forEach(f => f()); };
+  const rows = (c, q) => { let r = Object.entries(st[c] = st[c] || {}).map(([id, d]) => ({id, data: () => d})); if (q.flt) r = r.filter(x => x.data()[q.flt[0]] === q.flt[1]); if (q.ord) r.sort((a, b) => (b.data()[q.ord[0]] - a.data()[q.ord[0]]) * (q.ord[1] === "desc" ? 1 : -1)); return {docs: r}; };
+  return {
+    doc: path => { const [c, id] = path.split("/"); st[c] = st[c] || {}; return {
+      get: async () => ({exists: !!st[c][id], data: () => st[c][id]}),
+      set: async d => { st[c][id] = d; save(); }, update: async d => { st[c][id] = Object.assign(st[c][id] || {}, d); save(); }, delete: async () => { delete st[c][id]; save(); } }; },
+    collection: c => ({ ord: null, flt: null, orderBy(f, d) { this.ord = [f, d]; return this; }, where(f, o, v) { this.flt = [f, v]; return this; },
+      async get() { return rows(c, this); }, onSnapshot(fn) { const fire = () => fn(rows(c, this)); subs.push(fire); setTimeout(fire, 0); } })
+  };
+}
+
+/* ---------- Boot ---------- */
+(async () => {
+  paint(); paintDrawer(); setCount();
+  let user = null;
+  try { db = typeof claude !== "undefined" ? await claude.use("db") : null; user = db ? await claude.use("user") : null; } catch (e) { db = null; }
+  if (!db) { try { const r = await fetch("/api/ping"); if (r.ok && ((await r.json()).app === "spicezy")) { srv = true; db = apiDb(); } } catch (e) {} }
+  if (!db) { db = localDb(); local = true; }
+  applyTheme();
+  let canEdit = false;
+  if (!local && !srv) { try { canEdit = !!(await user.me()).canEdit; } catch (e) {} }
+  const acct = await gate(); me = {id: acct.id, name: acct.name, email: acct.email}; isAdmin = (local || srv) ? !!acct.admin : canEdit;
+  uid = me.id; loadProfile(); loadRV(); delete document.body.dataset.gate;
+  const err = e => toast("Live data problem: " + (e.message || e.code));
+  try { const g = await db.doc("wish/" + uid).get(); W = g.exists ? (g.data().ids || []) : []; } catch (e) {}
+  db.collection("products").onSnapshot(s => { P = {}; s.docs.forEach(d => { P[d.id] = d.data(); }); loaded.p = true; fixCart(); paint(); if (view === "pd") { if (!RV.includes(pid) && P[pid]) trackView(pid); } if (open && step === "cart" && !doneId) paintDrawer(); }, err);
+  db.collection("stock").onSnapshot(s => { S = {}; s.docs.forEach(d => { S[d.id] = d.data().n; }); loaded.s = true; fixCart(); paint(); if (open && step === "cart" && !doneId) paintDrawer(); }, err);
+  db.collection("settings").onSnapshot(s => { const m = s.docs.find(d => d.id === "main"); ST = m ? m.data() : {}; paint(); if (open && !doneId) paintDrawer(); }, err);
+  db.collection("ratings").onSnapshot(s => { R = {}; s.docs.forEach(d => { R[d.id] = d.data(); }); paint(); }, err);
+  db.collection("sold").onSnapshot(s => { SOLD = {}; s.docs.forEach(d => { SOLD[d.id] = d.data().n; }); paint(); }, err);
+  if (uid && !isAdmin) db.collection("orders").where("uid", "==", uid).onSnapshot(s => { MY = s.docs.map(d => ({id: d.id, ...d.data()})); if (view === "orders") paint(); }, err);
+  db.collection("coupons").where("show", "==", true).onSnapshot(s => { PUB = s.docs.map(d => d.data()); paint(); }, err);
+  if (uid) (isAdmin ? db.collection("feedback").orderBy("ts", "desc") : db.collection("feedback").where("uid", "==", uid)).onSnapshot(s => { FB = s.docs.map(d => ({id: d.id, ...d.data()})).sort((a, b) => b.ts - a.ts); paint(); }, err);
+  if (isAdmin) {
+    db.collection("coupons").onSnapshot(s => { C = {}; s.docs.forEach(d => { C[d.id] = d.data(); }); paint(); }, err);
+    db.collection("couponUse").onSnapshot(s => { CU = {}; s.docs.forEach(d => { CU[d.id] = d.data().n; }); paint(); }, err);
+    let first = true;
+    db.collection("orders").orderBy("ts", "desc").onSnapshot(s => {
+      const n = O.length; O = s.docs.map(d => ({id: d.id, ...d.data()}));
+      if (!first && O.length > n) toast("🛒 New order received!"); first = false; paint();
+    }, err);
+  }
+  route();
+})();
+</script>
+</body>
+</html>
